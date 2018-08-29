@@ -7,49 +7,26 @@
 		<mt-tab-container v-model="selected">
 			<mt-tab-container-item id="1">
 				<div class="order-list">
-					<div class="order-item border-b-1px">
+					<div class="order-item border-b-1px" v-for="(unfinish,index) in unfinishs" :key="index">
 						<div class="order-avatar">
 							<img src="../../img/finance/xwd@3x.png" />
 						</div>
 						<div class="order-detail">
 							<div class="order-detail-item">
 								<div class="key">申请人：</div>
-								<div class="value">马冬梅</div>
+								<div class="value">{{unfinish.username}}</div>
 							</div>
 							<div class="order-detail-item">
 								<div class="key">申请时间：</div>
-								<div class="value">2018-12-05</div>
+								<div class="value">{{unfinish.applystarttime}}</div>
 							</div>
 							<div class="order-detail-item">
 								<div class="key">申请产品：</div>
-								<div class="value">申请100万贷款</div>
+								<div class="value">{{unfinish.incentivenames}}</div>
 							</div>
 							<div class="order-detail-item">
 								<div class="key">申请状态：</div>
-								<div class="value">未受理</div>
-							</div>
-						</div>
-					</div>
-					<div class="order-item border-b-1px">
-						<div class="order-avatar">
-							<img src="../../img/finance/xwd@3x.png" />
-						</div>
-						<div class="order-detail">
-							<div class="order-detail-item">
-								<div class="key">申请人：</div>
-								<div class="value">马冬梅</div>
-							</div>
-							<div class="order-detail-item">
-								<div class="key">申请时间：</div>
-								<div class="value">2018-12-05</div>
-							</div>
-							<div class="order-detail-item">
-								<div class="key">申请产品：</div>
-								<div class="value">申请100万贷款</div>
-							</div>
-							<div class="order-detail-item">
-								<div class="key">申请状态：</div>
-								<div class="value">未受理</div>
+								<div class="value">{{unfinish.operatestatus | formatStatus}}</div>
 							</div>
 						</div>
 					</div>
@@ -58,7 +35,31 @@
 			<mt-tab-container-item id="2" class="finish-wrap" :style="{height:ordersHeight}">
 				<mt-loadmore :top-method="updateOrder" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" bottomPullText="上拉加载" bottomDropText="释放加载更多" ref="loadmore">
 					<div class="order-list">
-						<div class="order-item border-b-1px">
+						<!-- <div class="order-item border-b-1px"> -->
+							<div class="order-item border-b-1px" v-for="(finish,index) in finishs" :key="index">
+							<div class="order-avatar">
+								<img src="../../img/finance/micreloan-1.png" />
+							</div>
+							<div class="order-detail">
+								<div class="order-detail-item">
+									<div class="key">申请人：</div>
+									<div class="value">{{finish.username}}</div>
+								</div>
+								<div class="order-detail-item">
+									<div class="key">申请时间：</div>
+									<div class="value">{{finish.applystarttime}}</div>
+								</div>
+								<div class="order-detail-item">
+									<div class="key">申请产品：</div>
+									<div class="value">{{finish.incentivenames}}</div>
+								</div>
+								<div class="order-detail-item">
+									<div class="key">申请状态：</div>
+									<div class="value">{{finish.operatestatus | formatStatus}}</div>
+								</div>
+							</div>
+						</div>
+						<!-- <div class="order-item border-b-1px">
 							<div class="order-avatar">
 								<img src="../../img/finance/micreloan-1.png" />
 							</div>
@@ -76,26 +77,7 @@
 									<div class="value">申请100万贷款</div>
 								</div>
 							</div>
-						</div>
-						<div class="order-item border-b-1px">
-							<div class="order-avatar">
-								<img src="../../img/finance/micreloan-1.png" />
-							</div>
-							<div class="order-detail">
-								<div class="order-detail-item">
-									<div class="key">申请人：</div>
-									<div class="value">马冬梅</div>
-								</div>
-								<div class="order-detail-item">
-									<div class="key">申请时间：</div>
-									<div class="value">2018-12-05</div>
-								</div>
-								<div class="order-detail-item">
-									<div class="key">申请产品：</div>
-									<div class="value">申请100万贷款</div>
-								</div>
-							</div>
-						</div>
+						</div> -->
 					</div>
 				</mt-loadmore>
 			</mt-tab-container-item>
@@ -104,13 +86,14 @@
 </template>
 
 <script>
+import { Toast } from "mint-ui";
 export default {
   data() {
     return {
       selected: "1",
       pageNo: 1,
-      unfinish: [],
-      finish: [],
+      unfinishs: [],
+      finishs: [],
       ordersHeight: "",
       allLoaded: false
     };
@@ -120,13 +103,41 @@ export default {
     //获取未完成订单
     this.getOrderList(1, 1);
     // //获取已完成订单
-    // this.getOrderList(this.pageNo, 2);
+    this.getOrderList(this.pageNo, 2);
+  },
+  filters: {
+    formatStatus(val) {
+      switch (val) {
+        case "0":
+          val = "申请中";
+          break;
+        case "1":
+          val = "已受理";
+          break;
+        case "2":
+          val = "初审通过";
+          break;
+        case "3":
+          val = "初审未通过";
+          break;
+        case "4":
+          val = "放款通过";
+          break;
+        case "5":
+          val = "初审通过但放款未通过";
+          break;
+        default:
+          val = "";
+          break;
+      }
+      return val;
+    }
   },
   methods: {
     //获取订单数据
     getOrderList: async function(pageNo, status) {
       let params = {
-        method: "XYQ00008",
+        method: "XYJR00002",
         params: {
           userId: this.$store.state.finance.userId,
           type: status,
@@ -137,13 +148,17 @@ export default {
       const res = await this.$http.post("/apicenter/rest/post", params);
       if (res.resultCode == "0000") {
         if (status == 1) {
-          this.finish = res.result;
-        } else if (status == 3) {
-          if (res.result.length < 10) {
+          if (res.result.list.length) {
+            this.unfinishs = res.result.list;
+          }
+        } else if (status == 2) {
+          if (res.result.list.length < 10) {
             this.allLoaded = true;
           }
-          this.unfinish = this.unfinish.concat(res.result);
-          ++this.pageNo;
+          if (res.result.list.length) {
+            this.finishs = this.finishs.concat(res.result.list);
+            ++this.pageNo;
+          }
         }
       } else {
         Toast({
@@ -156,7 +171,7 @@ export default {
     //下拉更新
     updateOrder() {
       this.unfinish = [];
-    //  this.getOrderList(1, 3);
+      //  this.getOrderList(1, 3);
       this.$refs.loadmore.onTopLoaded();
     },
     //上拉加载
@@ -213,8 +228,8 @@ export default {
       }
     }
   }
-  .finish-wrap{
-	   overflow: auto;
+  .finish-wrap {
+    overflow: auto;
   }
 }
 </style>

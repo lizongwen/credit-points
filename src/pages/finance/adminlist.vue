@@ -8,7 +8,7 @@
 		<mt-tab-container v-model="selected">
 			<mt-tab-container-item id="1" class="unsure-wrap">
 				<mt-search class="search-wrap" v-model="searchValue" cancel-text="取消" placeholder="输入姓名或服务编号" :show="true" :result="unsureRes">
-					<div class="content-padded" >
+					<div class="content-padded">
 						<mt-loadmore :top-method="updateOrder" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" bottomPullText="上拉加载" bottomDropText="释放加载更多" ref="loadmore">
 							<div class="order-list">
 								<div class="order-item border-b-1px" v-for="(order,index) in unsureRes" :key="index">
@@ -63,9 +63,8 @@ export default {
     };
   },
   mounted() {
-	  console.log(1111)
-	this.ordersHeight = (window.innerHeight -52) / 20 + "rem";
-	
+    console.log(1111);
+    this.ordersHeight = (window.innerHeight - 52) / 20 + "rem";
     this.unsureRes = [
       {
         name: "马冬梅",
@@ -82,6 +81,11 @@ export default {
     ];
   },
   methods: {
+
+
+
+
+
     //下拉更新
     updateOrder() {
       this.unfinish = [];
@@ -170,8 +174,8 @@ export default {
       }
     }
   }
-  .content-padded{
-	  overflow: auto;
+  .content-padded {
+    overflow: auto;
   }
 }
 </style>

@@ -27,7 +27,7 @@
 				<div class="card-foot">
 					<div class="finance-wrap">
 						<div class="item" v-for="(incentive,index) in bank.incentives" :key="index">
-							<img v-if="$store.state.finance.score>=incentive.incentivescore" :src="require(`../../img/finance/${bank.sitecode}-${index}.png`)" @click="go(incentive.incentiveurl)">
+							<img v-if="$store.state.finance.score>=incentive.incentivescore" :src="require(`../../img/finance/${bank.sitecode}-${index}.png`)" @click="go(incentive,bank.id)">
 							<img v-else :src="require(`../../img/finance/${bank.sitecode}-${index}_grey.png`)">
 							<p class="name">{{incentive.incentivename}}</p>
 							<p class="score">乐惠分{{incentive.incentivescore}}</p>
@@ -130,12 +130,17 @@ export default {
       }
     },
 
-    go(url) {
-		this.$router.push({ path: url });
+    go(obj,id) {
+		let url=obj.incentiveurl
+		this.$router.push({ path: url ,query:{
+			incentiveid:obj.id,
+			incentivename:obj.incentivename,
+			venueid:id
+		}});
     },
     goApplyList() {
       this.$router.push({
-        path: "/finance/loanlist"
+		path: "/finance/loanlist",
       });
     }
   }

@@ -4,11 +4,11 @@
 		<form class="admin-form">
 			<div class="form-item">
 				<span class="admin-login-user"></span>
-				<input type="text" class="mui-input-clear" placeholder="账号">
+				<input type="text" class="mui-input-clear" placeholder="账号" v-model="form.user">
 			</div>
 			<div class="form-item">
 				<span class="admin-login-password"></span>
-				<input type="text" class="mui-input-clear" placeholder="密码">
+				<input type="password" class="mui-input-clear" placeholder="密码" v-model="form.password">
 			</div>
 		</form>
 		<div class="login-btn-wrap">
@@ -19,16 +19,41 @@
 
 <script>
 export default {
-	data(){
-		return{
-
-		}
-	},
-	methods:{
-		login(){
-			this.$router.push({path:'/finance/admin/list'})
-		}
-	}
+  data() {
+    return {
+      code: this.$route.query.code,
+      form: {
+        user: "",
+        password: ""
+      }
+    };
+  },
+  mounted() {},
+  methods: {
+    login: async function() {
+      let params = {
+        code: this.$route.query.code,
+        username: this.form.user,
+        password: this.form.password,
+        type: "xyjrUser"
+      };
+      const res = await this.$http.getUser(
+        "/h5web/credit/common/admin/checkLogin",
+        // "/qtweb/credit/common/user/getUserInfoByIdcard",
+        params
+	  );
+	  this.$router.push({ path: "/finance/admin/list" });
+    //   if (res.resultCode == "0000") {
+    //     this.$router.push({ path: "/finance/admin/list" });
+    //   } else {
+    //     Toast({
+    //       message: res.resultMsg,
+    //       duration: 2000,
+    //       position: "bottom"
+    //     });
+    //   }
+    }
+  }
 };
 </script>
 

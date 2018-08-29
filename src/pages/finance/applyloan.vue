@@ -31,7 +31,7 @@
 						<span class="text">申请产品</span>
 					</div>
 					<div class="value">
-						{{form.produce}}
+						{{form.incentivename}}
 					</div>
 				</div>
 			</form>
@@ -64,10 +64,13 @@ export default {
       ok: true,
       checked: false,
       form: {
+        userid: this.$store.state.finance.userId,
         user: this.$store.state.finance.userName,
         phone: this.$store.state.finance.userPhone,
-		card: this.$store.state.finance.useridcard,
-		produce:`申请${this.$route.query.produce}万元贷款额度`
+        card: this.$store.state.finance.useridcard,
+        incentivename: this.$route.query.incentivename,
+        incentiveid: this.$route.query.incentiveid,
+        venueid: this.$route.query.venueid
       }
     };
   },
@@ -80,21 +83,22 @@ export default {
   },
   methods: {
     submit: async function() {
-		console.log(this.checked)
       if (!this.checked) {
         return;
       }
       let params = {
         method: "XYJR00001",
         params: {
-          userid: this.$store.state.finance.userId,
+          usercreditscore: this.$store.state.finance.score,
+          userid: this.form.userid,
           username: this.form.user,
           useridcard: this.form.card,
           userphone: this.form.phone,
-          usercreditscore: this.$store.state.finance.score,
+          incentiveid: this.form.incentiveid,
+          incentivename: this.form.incentivename,
+          venueid: this.form.venueid
         }
-	  };
-	  console.log(params)
+      };
       const res = await this.$http.post("/apicenter/rest/post", params);
       if (res.resultCode == "0000") {
         this.ok = false;
@@ -137,10 +141,10 @@ export default {
     .checkbox-wrap {
       margin-top: px(20);
       margin-bottom: px(40);
-	  text-align: center;
-	  .checkbox:checked{
-		  background: #FDE728;
-	  }
+      text-align: center;
+      .checkbox:checked {
+        background: #fde728;
+      }
       .chenckbox-text {
         margin-left: px(6);
         font-size: px(12);
@@ -160,11 +164,11 @@ export default {
     }
     .result-desc {
       margin: px(12) 0 px(37);
-	  font-size: px(18);
-	  .result-desc-li{
-		  margin-top: px(20);
-		  font-size: px(16);
-	  }
+      font-size: px(18);
+      .result-desc-li {
+        margin-top: px(20);
+        font-size: px(16);
+      }
     }
     .btn {
       width: px(240);

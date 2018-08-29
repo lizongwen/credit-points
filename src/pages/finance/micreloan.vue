@@ -4,21 +4,20 @@
 			<img src="../../img/finance/micreloan_slogan.png">
 		</div>
 		<ul class="micreloan-list">
-			<li class="micreloan-item">
+			<li class="micreloan-item" v-for="(incentive,index) in incentives" :key="index">
 				<div class="l-box">
-					<img src="../../img/finance/micreloan-1.png">
-					<!-- <img v-if="$store.state.finance.score>=800" src="../../img/finance/xwd@3x.png"> -->
+					<img :src="require(`../../img/finance/micreloan-${index+1}.png`)">
 					<div class="content">
 						<p class="title">最高额度
-							<span>30</span>万元</p>
-						<p class="desc">乐惠分800以上</p>
+							<span>{{incentive.incentivename.slice(4,-2)}}</span>万元</p>
+						<p class="desc">乐惠分{{incentive.incentivescore}}以上</p>
 					</div>
 				</div>
 				<div class="r-box">
-					<button class="btn btn-golden" :class="{'btn-disabled':$store.state.finance.score<800||total>0}" :disabled="$store.state.finance.score<800||total>0" @click="apply(30)">申请</button>
+					<button class="btn btn-golden" :class="{'btn-disabled':$store.state.finance.score<800||total>0}" :disabled="$store.state.finance.score<800||total>0" @click="apply(incentive.incentivename,incentive.id)">申请</button>
 				</div>
 			</li>
-			<li class="micreloan-item">
+			<!-- <li class="micreloan-item">
 				<div class="l-box">
 					<img src="../../img/finance/micreloan-2.png">
 					<div class="content">
@@ -43,10 +42,10 @@
 				<div class="r-box">
 					<button class="btn btn-golden" :class="{'btn-disabled':$store.state.finance.score<900||total>0}" :disabled="$store.state.finance.score<800||total>0" @click="apply(100)">申请</button>
 				</div>
-			</li>
+			</li> -->
 		</ul>
 		<div class="score-tip">乐惠分
-			<span class="score">999</span>
+			<span class="score">{{$store.state.finance.score}}</span>
 		</div>
 	</div>
 </template>
@@ -56,14 +55,38 @@ import { Toast } from "mint-ui";
 export default {
   data() {
     return {
-		total:""
-	};
+      total: "",
+      incentives: []
+    };
   },
   mounted() {
-	  console.log(this.$store.state.finance.score)
+	this.getIncentive()
     this.getIsApply();
   },
   methods: {
+    //获取子级激励措施
+    getIncentive: async function() {
+      let params = {
+        method: "LHF5002",
+        params: {
+          incentiveId: this.$route.query.incentiveid
+        }
+      };
+      const res = await this.$http.post("/apicenter/rest/post", params);
+      if (res.resultCode == "0000") {
+		  if(res.result.length){
+ 			this.incentives=res.result
+		  }
+      } else {
+        Toast({
+          message: res.resultMsg,
+          duration: 2000,
+          position: "bottom"
+        });
+      }
+    },
+
+    //是否已申请
     getIsApply: async function() {
       let params = {
         method: "XYJR00008",
@@ -73,7 +96,8 @@ export default {
       };
       const res = await this.$http.post("/apicenter/rest/post", params);
       if (res.resultCode == "0000") {
-		this.total=res.result.total;
+		  console.log(res)
+        this.total = res.result.total;
       } else {
         Toast({
           message: res.resultMsg,
@@ -82,11 +106,13 @@ export default {
         });
       }
     },
-    apply(val) {
+    apply(val,id) {
       this.$router.push({
         path: "/finance/applyloan",
         query: {
-          produce: val
+		  	incentivename: val,
+			venueid:this.$route.query.venueid,
+			incentiveid:id
         }
       });
     }
