@@ -20,7 +20,7 @@
     <div class="content-padded travel-list">
       <div class="card" v-for="(car,index) in cars" :key="index">
         <div class="card-head">
-          <div class="card-head-title" card-head-title-bde-blue
+          <div class="card-head-title card-head-title-bde-blue">{{car.name}}</div>
         </div>
       </div>
     </div>
@@ -36,6 +36,14 @@ export default {
     data() {
         return {
           total: 0,
+          cars:[
+            {
+              name: '易开出行'
+            },
+            {
+
+            }
+          ]
         }
     },
     mounted(){
