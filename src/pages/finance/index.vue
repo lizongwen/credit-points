@@ -1,0 +1,236 @@
+<template>
+	<div class="index">
+		<div class="banner"></div>
+		<div class="index-box">
+			<div class="index-box-item">
+				<img src="../../img/finance/pig@3x.png">
+				<p>信理财</p>
+			</div>
+			<div class="index-box-item">
+				<img src="../../img/finance/card@3x.png">
+				<p>信易申</p>
+			</div>
+			<div class="index-box-item">
+				<img src="../../img/finance/money@3x.png">
+				<p>信易贷</p>
+			</div>
+		</div>
+		<div class="content-padded finance-list">
+			<div class="card" v-for="(bank,index) in banks" :key="index">
+				<div class="card-head">
+					<div class="card-head-title card-head-title-bd-blue">{{bank.travelname}}</div>
+					<div class="card-head-small-title">{{bank.description}}</div>
+				</div>
+				<div class="card-body">
+					<img src="../../img/finance/ms_bank@2x.png">
+				</div>
+				<div class="card-foot">
+					<div class="finance-wrap">
+						<div class="item" v-for="(incentive,index) in bank.incentives" :key="index">
+							<img v-if="$store.state.finance.score>=incentive.incentivescore" :src="require(`../../img/finance/${bank.sitecode}-${index}.png`)" @click="go(incentive.incentiveurl)">
+							<img v-else :src="require(`../../img/finance/${bank.sitecode}-${index}_grey.png`)">
+							<p class="name">{{incentive.incentivename}}</p>
+							<p class="score">乐惠分{{incentive.incentivescore}}</p>
+						</div>
+						<!-- <div class="item">
+							<img v-if="$store.state.finance.score>=800" src="../../img/finance/xwd@3x.png" @click="goCreditCard">
+							<img v-else src="../../img/finance/micreloan-1.png">
+							<p class="name">信用卡申请</p>
+							<p class="score">乐惠分800</p>
+						</div>
+						<div class="item">
+							<img v-if="$store.state.finance.score>=850" src="../../img/finance/xyk.png" @click="goMicreLoan">
+							<img v-else src="../../img/finance/card-1.png">
+							<p class="name">小微贷款</p>
+							<p class="score">乐惠分850</p>
+						</div> -->
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="tips" id="running" @click="goApplyList">
+			<div class="tips-number">+{{total}}</div>
+			<div class="tips-desc">进行中</div>
+		</div>
+	</div>
+</template>
+
+<script>
+import utils from "@/js/utils";
+import { Toast } from "mint-ui";
+export default {
+  data() {
+    return {
+      total: 0,
+	  banks: [],
+	  incentives:[],
+    };
+  },
+  mounted() {
+    this.$store.commit("finance/setUserId", this.$route.query.userId);
+    this.$store.commit("finance/setScore", this.$route.query.score);
+    this.$store.commit("finance/setUseridcard", this.$route.query.idcard);
+    utils.dragBall("running");
+    this.getUserInfo();
+    this.getOrderTotal();
+    this.getNetDot();
+  },
+  methods: {
+    //获取用户信息
+    getUserInfo: async function() {
+      let params = {
+        idcard: this.$route.query.idcard
+      };
+      const res = await this.$http.getUser(
+        "/h5web/credit/common/user/getUserInfoByIdcard",
+        // "/qtweb/credit/common/user/getUserInfoByIdcard",
+        params
+      );
+      if (res) {
+        this.$store.commit("finance/setUserName", res.username);
+        this.$store.commit("finance/setUserPhone", res.userphone);
+      }
+    },
+    //获取进行中的申请
+    getOrderTotal: async function() {
+      let params = {
+        method: "XYJR00006",
+        params: {
+          userId: this.$store.state.finance.userId
+        }
+      };
+      const res = await this.$http.post("/apicenter/rest/post", params);
+      if (res.resultCode == "0000") {
+        this.total = res.result.total;
+      } else {
+        Toast({
+          message: res.resultMsg,
+          duration: 2000,
+          position: "bottom"
+        });
+      }
+    },
+    //获取网点
+    getNetDot: async function() {
+      let params = {
+        method: "XYJR00007",
+        params: {}
+      };
+      const res = await this.$http.post("/apicenter/rest/post", params);
+      if (res.resultCode == "0000") {
+        if (res.result.length) {
+		  this.banks = res.result;
+        }
+      } else {
+        Toast({
+          message: res.resultMsg,
+          duration: 2000,
+          position: "bottom"
+        });
+      }
+    },
+
+    go(url) {
+		this.$router.push({ path: url });
+    },
+    goApplyList() {
+      this.$router.push({
+        path: "/finance/loanlist"
+      });
+    }
+  }
+};
+</script>
+
+<style lang="scss" scoped>
+@import "../../style/func";
+@import "../../style/mixin";
+@import "../../style/variable";
+.index {
+  height: 100%;
+  background: $bg-grey;
+  .banner {
+    display: flex;
+    height: px(160);
+    background: url("../../img/finance/banner@2x.png") no-repeat center;
+    background-size: cover;
+  }
+  .index-box {
+    position: relative;
+    display: flex;
+    width: px(275);
+    height: px(75);
+    margin: px(-38) auto px(30) auto;
+    padding: px(5);
+    border-radius: px(4);
+    background: #fff;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
+    .index-box-item {
+      flex: 1;
+      text-align: center;
+      &:not(:last-child) {
+        position: relative;
+        &:after {
+          content: "";
+          position: absolute;
+          top: px(6);
+          right: 0;
+          width: px(2);
+          height: px(54);
+          background: $bd-grey;
+        }
+      }
+      > img {
+        width: px(30);
+        margin-top: px(8);
+        margin-bottom: px(5);
+      }
+    }
+  }
+  .finance-list {
+    .finance-wrap {
+      margin-top: px(15);
+      margin-bottom: px(3);
+      display: flex;
+      .item {
+        flex: 1;
+        text-align: center;
+        > img {
+          width: px(33);
+        }
+        .name {
+          margin-top: px(2);
+        }
+        .score {
+          display: inline-block;
+          padding: 0 px(3);
+          font-size: px(9);
+          transform: scale(0.75);
+          background: #ffe4e4;
+          color: #ff7070;
+        }
+      }
+    }
+  }
+  .tips {
+    width: px(80);
+    height: px(80);
+    background: url("../../img/finance/icon_yellow.png") no-repeat;
+    background-size: 100% 100%;
+    position: fixed;
+    right: 4px;
+    bottom: 10px;
+    color: #ffffff;
+    text-align: center;
+    padding-top: 18px;
+    .tips-number {
+      font-size: px(22);
+      line-height: px(24);
+    }
+    .tips-desc {
+      font-size: px(14);
+    }
+  }
+}
+</style>
+

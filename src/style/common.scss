@@ -1,0 +1,448 @@
+/* 
+	说明
+	// 全局样式global
+	// 通用布局
+	// 表单
+	// 按钮
+	// 多选框
+	// mint组件覆盖
+*/
+
+/* global styles */
+
+@import "./style/func";
+@import "./style/mixin";
+@import "./style/variable";
+body,
+div,
+span,
+header,
+footer,
+nav,
+section,
+aside,
+article,
+ul,
+dl,
+dt,
+dd,
+li,
+a,
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+i,
+b,
+textarea,
+button,
+input,
+select,
+figure,
+figcaption,
+    {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    font-style: normal;
+    text-decoration: none;
+    border: none; // color: #333;
+    font-weight: normal;
+    font-family: 'PingFang SC', 'STHeitiSC-Light', 'Helvetica-Light', arial, 'sans-serif';
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-font-smoothing: antialiased;
+    &:hover {
+        outline: none;
+    }
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
+
+::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+    background-color: #F5F5F5;
+}
+
+/*定义滚动条轨道 内阴影+圆角*/
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0);
+    border-radius: 10px;
+    background-color: #F5F5F5;
+}
+
+/*定义滑块 内阴影+圆角*/
+
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #555;
+}
+
+html,
+body {
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    font-size: px(14);
+	line-height: 1.42857142;
+	color:$text-default;
+}
+
+img {
+    max-width: 100%;
+    vertical-align: top;
+}
+
+input:focus {
+    outline: none;
+}
+
+// 工具类
+.clearfix:before,
+.clearfix:after {
+    content: " ";
+    display: table;
+}
+
+.clearfix:after {
+    clear: both;
+}
+
+.block {
+    display: block
+}
+
+.inline-block {
+    display: inline-block;
+}
+
+.pull-left,
+.fl {
+    float: left !important;
+}
+
+.pull-right,
+.fr {
+    float: right !important;
+}
+
+.hide,
+.hidden {
+    display: none !important;
+}
+
+.show {
+    display: block !important;
+}
+
+.align-center,
+.text-center {
+    text-align: center !important;
+}
+
+.align-left,
+.text-left {
+    text-align: left !important;
+}
+
+.align-right,
+.text-right {
+    text-align: right !important;
+}
+
+.align-justify,
+.text-justify {
+    text-align: justify
+}
+
+.invisible {
+    visibility: hidden;
+}
+
+.over-hiden {
+    overflow: hidden !important;
+}
+
+.text-hide {
+    font: 0/0 a;
+    color: transparent;
+    text-shadow: none;
+    background-color: transparent;
+    border: 0;
+}
+
+.affix {
+    position: fixed;
+}
+
+.text-indent {
+    text-indent: 30px;
+}
+
+.ellipsis {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.no-border-radius {
+    border-radius: 0 !important;
+}
+
+.no-border {
+    border: none !important;
+}
+
+.strong {
+    font-weight: bold
+}
+
+@media(-webkit-min-device-pixel-ratio:1.5),
+(min-device-pixel-ratio:1.5) {
+    .border-t-1px {
+        &::before {
+            -webkit-transform: scaleY(0.7);
+            transform: scaleY(0.7);
+        }
+    }
+}
+
+@media(-webkit-min-device-pixel-ratio:2),
+(min-device-pixel-ratio:2) {
+    .border-t-1px {
+        &::before {
+            -webkit-transform: scaleY(0.5);
+            transform: scaleY(0.5);
+        }
+    }
+}
+
+@media(-webkit-min-device-pixel-ratio:2.5),
+(min-device-pixel-ratio:2.5) {
+    .border-t-1px {
+        &::before {
+            -webkit-transform: scaleY(0.33333334);
+            transform: scaleY(0.33333334);
+        }
+    }
+}
+
+@media(-webkit-min-device-pixel-ratio:1.5),
+(min-device-pixel-ratio:1.5) {
+    .border-b-1px {
+        &::after {
+            -webkit-transform: scaleY(0.7);
+            transform: scaleY(0.7);
+        }
+    }
+}
+
+@media(-webkit-min-device-pixel-ratio:2),
+(min-device-pixel-ratio:2) {
+    .border-b-1px {
+        &::after {
+            -webkit-transform: scaleY(0.5);
+            transform: scaleY(0.5);
+        }
+    }
+}
+
+@media(-webkit-min-device-pixel-ratio:2.5),
+(min-device-pixel-ratio:2.5) {
+    .border-b-1px {
+        &::after {
+            -webkit-transform: scaleY(0.33333334);
+            transform: scaleY(0.33333334);
+        }
+    }
+}
+
+// 通用布局
+.content-padded {
+    padding-left: px(10);
+    padding-right: px(10);
+}
+
+// 表单
+.form {
+    font-size: px(16);
+    background-color: $bg-white;
+    .form-item {
+        display: flex;
+        padding: px(10);
+        &:not(:last-child) {
+            @include border-b-1px(#ebebeb);
+        }
+        .inner-box {
+            width: px(15);
+            .required {
+                position: relative;
+                top: px(4);
+                font-size: px(16);
+                color: #FE0655;
+            }
+        }
+        .title {
+            width: px(170)
+        }
+        .value {
+            flex: 1;
+            input {
+                color: rgba(46, 46, 46, 0.40);
+                font-size: px(16);
+            }
+        }
+    }
+}
+
+// 按钮
+.btn {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    position: relative;
+    height: px(32);
+    padding: 0 px(20);
+    border-radius: px(4);
+    border: 0;
+    font-size: px(14);
+    text-align: center;
+    outline: 0;
+	overflow: hidden;
+}
+
+.btn-block {
+    width: 100%;
+    letter-spacing: px(2);
+}
+
+.btn-primary {
+    background: $btn-primary;
+    color: $text-white;
+}
+
+.btn-golden {
+    background: #FDE728;
+}
+
+.btn-default {
+    border: px(1) solid $bd-grey;
+    background: $btn-default;
+    color: $text-default;
+}
+
+.btn-default-primary {
+    border: px(1) solid $bd-primary;
+    background: $btn-default;
+    color: $text-primary;
+}
+
+.btn-large {
+    height: px(48);
+    font-size: px(16);
+}
+
+.btn-disabled {
+    background: $btn-disabled;
+}
+
+//多选框
+.checkbox {
+    appearance: none;
+    -webkit-appearance: none;
+    position: relative;
+    display: inline-block;
+    width: px(16);
+    height: px(16);
+    border-radius: 100%;
+    background-color: #c0c0c0;
+    vertical-align: middle;
+    &::after {
+        content: "";
+        border: px(1.5) solid #ffffff;
+        border-left: 0;
+        border-top: 0;
+        left: px(4.8);
+        position: absolute;
+        width: px(6.71875);
+        height: px(12);
+        -webkit-transform: rotate(45deg);
+        transform: rotate(45deg);
+        -webkit-transition: -webkit-transform 0.2s;
+        transition: -webkit-transform 0.2s;
+        transition: transform 0.2s;
+        transition: transform 0.2s, -webkit-transform 0.2s;
+    }
+    &:checked {
+        background-color: $bg-primary;
+    }
+}
+
+//卡片
+.card {
+	overflow: hidden;
+	margin-bottom: px(20);
+    .card-head {
+        margin-bottom: px(15);
+        font-size: 0;
+        .card-head-title {
+            display: inline-block;
+            height: px(16);
+            padding-left: px(6);
+            line-height: px(16);
+            border-left: px(3) solid transparent;
+            font-size: px(16);
+            &.card-head-title-bd-blue {
+                border-color: #0268D6
+            }
+        }
+        .card-head-small-title {
+            display: inline-block;
+            margin-left: px(15);
+            font-size: px(12);
+            color: $text-grey;
+        }
+    }
+    .card-body {
+		overflow: hidden;
+        background: $bg-white;
+    }
+    .card-foot {
+		overflow: hidden;
+        background: $bg-white;
+	}
+}
+
+// mint组件
+.mint-navbar {
+    @include border-b-1px(#ebebeb);
+    .mint-tab-item {
+        .mint-tab-item-label {
+            font-size: px(16);
+            color: $text-grey;
+        }
+        &.is-selected {
+            z-index: 1;
+            position: relative;
+            margin-bottom: -1px;
+            border-bottom-color: $bd-primary;
+            .mint-tab-item-label {
+                color: $text-primary;
+            }
+        }
+    }
+}
