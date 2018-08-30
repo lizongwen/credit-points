@@ -22,21 +22,26 @@ export default {
     };
   },
   mounted() {
-	this.$store.commit("umbrella/setCode", this.$route.query.code);
-	this.$store.commit("umbrella/setVenueId", this.$route.query.wdbm);
+    if (window.getShareData) {
+      window.getShareData.ClearHistory("true");
+      window.getShareData.showTitleBar("true");
+    }
+    this.$store.commit("umbrella/setCode", this.$route.query.code);
+    this.$store.commit("umbrella/setVenueId", this.$route.query.wdbm);
     this.getUserInfo();
   },
   methods: {
     //获取用户信息
     getUserInfo: async function() {
       let params = {
-        code: this.$store.state.umbrella.code
+        code: this.$store.state.umbrella.code,
+        type: "xyqUser"
       };
       const res = await this.$http.getUser(
         "/h5web/credit/common/user/getUserInfoByCode",
         // "/qtweb/credit/common/user/getUserInfoByCode",
         params
-	  );
+      );
       this.$store.commit("umbrella/setUserId", res.userid);
       this.$store.commit("umbrella/setUserName", res.username);
       this.$store.commit("umbrella/setUserPhone", res.userphone);
@@ -52,23 +57,22 @@ export default {
           userId: this.$store.state.umbrella.userId
         }
       };
-	  const res = await this.$http.post("/apicenter/rest/post", params);
-	  if(res.resultCode=='0000'){
-		   if (res.result > 0) {
-				this.$store.state.umbrella.isBorrow = true;
-				this.borrowImg = unborrowImg;
-			}else{
-				this.$store.state.umbrella.isBorrow = false;
-				this.borrowImg = borrowImg;
-			}
-	  }else{
-		  Toast({
-			message: res.resultMsg,
-			duration: 2000,
-			position: "bottom"
-		});
-	  }
-     
+      const res = await this.$http.post("/apicenter/rest/post", params);
+      if (res.resultCode == "0000") {
+        if (res.result > 0) {
+          this.$store.state.umbrella.isBorrow = true;
+          this.borrowImg = unborrowImg;
+        } else {
+          this.$store.state.umbrella.isBorrow = false;
+          this.borrowImg = borrowImg;
+        }
+      } else {
+        Toast({
+          message: res.resultMsg,
+          duration: 2000,
+          position: "bottom"
+        });
+      }
     },
     //借伞
     borrow() {
