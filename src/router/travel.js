@@ -5,14 +5,9 @@ let travelRouter = [
 		component: () => import('@/pages/travel/index.vue')
     },
     {
-        path: '/travel/index',
+    path: '/travel/index',
 		name: 'travel',
 		component: () => import('@/pages/travel/index.vue')
-    },
-    {
-		path: '/travel/admin/index',
-		name: 'admin_index',
-		component: () => import('@/pages/travel/admin_index.vue')
     },
     {
 		path: '/travel/application/list',
