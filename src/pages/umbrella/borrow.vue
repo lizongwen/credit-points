@@ -76,8 +76,8 @@ export default {
       let params = {
         method: "XYQ00007",
         params: {
-            venueId: "75181d4836e844249d3a41abc643ab5d",
-        //   venueId: this.$store.state.umbrella.venueId,
+            // venueId: "75181d4836e844249d3a41abc643ab5d",
+          sitecode: this.$store.state.umbrella.venueId,
           userId: this.$store.state.umbrella.userId,
           userName: this.form.user,
           userIdCard: this.form.card,
