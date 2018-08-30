@@ -3,7 +3,7 @@
 		<div v-show="ok">
 			<mt-radio title="请做出评价" v-model="value" :options="commentSelect" class="radios"></mt-radio>
 			<div class="textarea">
-				<mt-field placeholder="请您对本次服务进行评价…" type="textarea" rows="8" v-model="commentText"></mt-field>
+				<mt-field placeholder="请您对本次服务进行评价…" type="textarea" rows="9" v-model="commentText"></mt-field>
 			</div>
 			<div class="note">
 				注意事项：<br/> 1.请认真填写对本次服务的评价。
@@ -87,7 +87,15 @@ export default {
     fallback() {
       this.$router.back();
     }
-  }
+  },
+//   watch: {
+//     commentText: function(newVal, oldVal) {
+// 		console.log(newVal.length > 10)
+//       if (newVal.length >=10) {
+//         this.commentText = oldVal;
+//       }
+//     }
+//   }
 };
 </script>
 

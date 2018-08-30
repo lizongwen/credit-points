@@ -27,10 +27,24 @@ export default {
       window.getShareData.showTitleBar("true");
     }
     this.$store.commit("umbrella/setCode", this.$route.query.code);
-    this.$store.commit("umbrella/setVenueId", this.$route.query.wdbm);
+    this.getWdbm();
     this.getUserInfo();
   },
   methods: {
+    //获取网点编码
+    getWdbm: async function() {
+      let params = {
+        code: this.$route.query.wdbm,
+        type: "xyqUser"
+      };
+      const res = await this.$http.getUser(
+        "/h5web/credit/common/venue/getWdbmByCode",
+        params
+      );
+      if (res) {
+        this.$store.commit("umbrella/setVenueId", res);
+      }
+    },
     //获取用户信息
     getUserInfo: async function() {
       let params = {

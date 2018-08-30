@@ -23,7 +23,7 @@
 						<span class="text">联系电话</span>
 					</div>
 					<div class="value">
-						{{form.phone}}
+						{{formatPhone}}
 					</div>
 				</div>
 			</form>
@@ -66,7 +66,12 @@ export default {
       return this.form.card.replace(/(\w)/g, function(a, b, c, d) {
         return c > 5 && c < 14 ? "*" : a;
       });
-    }
+	},
+	formatPhone(){
+	return this.form.phone.replace(/(\w)/g, function(a, b, c, d) {
+        return c > 2 && c < 7 ? "*" : a;
+      });
+	}
   },
   methods: {
     submit: async function() {
@@ -76,8 +81,8 @@ export default {
       let params = {
         method: "XYQ00007",
         params: {
-            // venueId: "75181d4836e844249d3a41abc643ab5d",
-          sitecode: this.$store.state.umbrella.venueId,
+          // venueId: "75181d4836e844249d3a41abc643ab5d",
+          wdbm: this.$store.state.umbrella.venueId,
           userId: this.$store.state.umbrella.userId,
           userName: this.form.user,
           userIdCard: this.form.card,

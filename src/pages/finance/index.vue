@@ -1,6 +1,8 @@
 <template>
 	<div class="index">
-		<div class="banner"></div>
+		<div class="banner">
+			<div class="admin-flag" v-if="adminFlag" @click="goAdminPage">管理员</div>
+		</div>
 		<div class="index-box">
 			<div class="index-box-item">
 				<img src="../../img/finance/pig@3x.png">
@@ -61,9 +63,10 @@ import { Toast } from "mint-ui";
 export default {
   data() {
     return {
+      adminFlag: true,
       total: 0,
-	  banks: [],
-	  incentives:[],
+      banks: [],
+      incentives: []
     };
   },
   mounted() {
@@ -71,11 +74,25 @@ export default {
     this.$store.commit("finance/setScore", this.$route.query.score);
     this.$store.commit("finance/setUseridcard", this.$route.query.idcard);
     utils.dragBall("running");
+    this.checkIsAdmin();
     this.getUserInfo();
     this.getOrderTotal();
     this.getNetDot();
   },
   methods: {
+    // 检查是否是管理员
+    checkIsAdmin: async function() {
+      let params = {
+        idcard: this.$route.query.idcard
+      };
+      const res = await this.$http.getUser(
+        "/h5web/credit/common/admin/checkIsAdmin",
+        params
+      );
+      if (res.resultCode == "0000") {
+        this.adminFlag = true;
+      }
+    },
     //获取用户信息
     getUserInfo: async function() {
       let params = {
@@ -119,7 +136,7 @@ export default {
       const res = await this.$http.post("/apicenter/rest/post", params);
       if (res.resultCode == "0000") {
         if (res.result.length) {
-		  this.banks = res.result;
+          this.banks = res.result;
         }
       } else {
         Toast({
@@ -130,17 +147,25 @@ export default {
       }
     },
 
-    go(obj,id) {
-		let url=obj.incentiveurl
-		this.$router.push({ path: url ,query:{
-			incentiveid:obj.id,
-			incentivename:obj.incentivename,
-			venueid:id
-		}});
+    go(obj, id) {
+      let url = obj.incentiveurl;
+      this.$router.push({
+        path: url,
+        query: {
+          incentiveid: obj.id,
+          incentivename: obj.incentivename,
+          venueid: id
+        }
+      });
     },
     goApplyList() {
       this.$router.push({
-		path: "/finance/loanlist",
+        path: "/finance/loanlist"
+      });
+    },
+    goAdminPage() {
+      this.$router.push({
+        path: "/finance/admin/list"
       });
     }
   }
@@ -155,10 +180,18 @@ export default {
   height: 100%;
   background: $bg-grey;
   .banner {
+    position: relative;
     display: flex;
     height: px(160);
     background: url("../../img/finance/banner@2x.png") no-repeat center;
     background-size: cover;
+    .admin-flag {
+      position: absolute;
+      right: 0;
+      top: px(16);
+      background: #fde728;
+      padding: px(3) px(8);
+    }
   }
   .index-box {
     position: relative;
