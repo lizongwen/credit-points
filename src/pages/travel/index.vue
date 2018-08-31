@@ -21,7 +21,7 @@
     </div>
     <!--contain-->
     <div class="content-padded travel-list">
-      <div class="card" v-for="(car,index) in cars" :key="index">
+      <div class="card" v-for="(car,index) in cars" :key="index" @click="goApplication">
         <div class="card-head">
           <div class="card-head-title card-head-title-bd-green">{{car.name}}</div>
           <div class="card-head-small-title">{{car.description}}</div>
@@ -41,12 +41,12 @@
       </div>
     </div>
 
-    <div class="tips" id="running">
+    <div class="tips" id="running" @click="toApplicationList">
       <div class="tips-number">+{{total}}</div>
       <div class="tips-desc">进行中</div>
     </div>
 
-    <div class="score-tip" v-if="role === 'admin'">
+    <div class="score-tip" v-if="role === 'admin'" @click="goAdminPage">
       <img src="../../img/travel/icon_guanliyuan.png" >
 			<span class="score">管理员</span>
 		</div>
@@ -76,7 +76,23 @@ export default {
     // 押金减半
     // 图片居中问题
   },
-  methods: {}
+  methods: {
+    toApplicationList(){
+      this.$router.push({
+        name: 'application_list'
+      });
+    },
+    goApplication(){
+      this.$router.push({
+        name: 'deposit_halved'
+      });
+    },
+    goAdminPage(){
+      this.$router.push({
+        name: 'approval'
+      });
+    }
+  }
 }
 </script>
 
