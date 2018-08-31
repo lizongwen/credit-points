@@ -6,7 +6,7 @@ let travelRouter = [
     },
     {
     path: '/travel/index',
-		name: 'travel',
+		name: 'travel_index',
 		component: () => import('@/pages/travel/index.vue')
     },
     {
@@ -29,8 +29,6 @@ let travelRouter = [
 		name: 'deposit_halved',
 		component: () => import('@/pages/travel/deposit_halved.vue')
     },
-
-    
 ]
 
 export default travelRouter;
