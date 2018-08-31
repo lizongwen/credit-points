@@ -315,7 +315,7 @@ input:focus {
     -moz-appearance: none;
     appearance: none;
     position: relative;
-    height: px(32);
+    height: px(36);
     padding: 0 px(20);
     border-radius: px(4);
     border: 0;
@@ -351,13 +351,22 @@ input:focus {
     color: $text-primary;
 }
 
-.btn-large {
-    height: px(48);
-    font-size: px(16);
-}
+
 
 .btn-disabled {
     background: $btn-disabled;
+}
+.btn-min{
+	height: px(28);
+    font-size: px(12);
+}
+.btn-small{
+	height: px(32);
+    font-size: px(14);
+}
+.btn-large {
+    height: px(40);
+    font-size: px(16);
 }
 
 //多选框

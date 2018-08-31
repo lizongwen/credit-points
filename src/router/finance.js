@@ -37,6 +37,10 @@ let financeRouter = [
 		path: '/finance/admin/list',
 		name: 'finance_adminlist',
 		component: () => import('@/pages/finance/adminlist.vue')
+	},{
+		path: '/finance/admin/test',
+		name: 'finance_admintest',
+		component: () => import('@/pages/finance/test.vue')
 	},
 	
 ]
