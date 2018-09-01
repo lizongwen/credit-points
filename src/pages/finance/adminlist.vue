@@ -100,25 +100,25 @@
 										<template v-if="order.operatestatus==2">
 											<div class="order-detail-item form-item">
 												<div class="key">受理结果：</div>
-												<div class="value" @click="changeType(index)">{{pickerValue}}
+												<div class="value" @click="changeType(index)">{{order.checkedValue?order.checkedValue:"请选择"}}
 													<span class="picker-icon-up"></span>
 													<span class="picker-icon-down"></span>
 												</div>
 											</div>
-											<div class="order-detail-item form-item" v-show="form.status!=5">
+											<div class="order-detail-item form-item" v-show="order.checkedId!=5">
 												<div class="key">放款额度：</div>
 												<div class="value">
 													<div class="input-group">
-														<input type="text" class="mui-input-clear" placeholder="账号" v-model="form.loanAmount">
+														<input type="text" class="mui-input-clear" placeholder="账号" v-model="order.loanamount">
 														<div class="input-group-addon">万元</div>
 													</div>
 												</div>
 											</div>
 											<div class="order-btn-box">
-												<button class="btn btn-block btn-golden" @click="submit(order.id)">确认提交</button>
+												<button class="btn btn-block btn-golden" @click="submit(index)">确认提交</button>
 											</div>
 										</template>
-										<template v-if="order.operatestatus==3">
+										<template v-if="order.operatestatus==3||order.operatestatus==5">
 											<div class="order-detail-item">
 												<div class="key">受理结果：</div>
 												<div class="value">未通过</div>
@@ -130,7 +130,6 @@
 												<div class="value">{{order.loanamount}}万元</div>
 											</div>
 										</template>
-
 									</div>
 								</div>
 							</div>
@@ -193,11 +192,11 @@ export default {
           className: "slot1",
           textAlign: "center"
         }
-      ],
-      form: {
-        loanAmount: 0,
-        status: 4
-      }
+      ]
+      //   form: {
+      //     loanAmount: 0,
+      //     status: 4
+      //   }
     };
   },
   mounted() {
@@ -268,7 +267,9 @@ export default {
       }
     },
     //显示受理结果
-    changeType() {
+    changeType(value) {
+      let self = this;
+      self.indexTemp = value;
       this.isPopup = true;
     },
     //选择受理结果
@@ -278,8 +279,11 @@ export default {
     },
     //确认
     esure() {
-      this.pickerValue = this.pickerTemp.value;
-      this.form.status = this.pickerTemp.id;
+      this.finishRes[this.indexTemp].checkedId = this.pickerTemp.id;
+      this.finishRes[this.indexTemp].checkedValue = this.pickerTemp.value;
+      if (this.pickerTemp.id == 5) {
+        this.finishRes[this.indexTemp].loanamount = 0;
+      }
       this.isPopup = false;
     },
     //取消
@@ -398,19 +402,36 @@ export default {
       }
     },
     //确认提交
-    submit: async function(id) {
+    submit: async function(index) {
+      if (!this.finishRes[index].checkedId) {
+        Toast({
+          message: "请选择受理结果",
+          duration: 2000,
+          position: "bottom"
+        });
+        return;
+      }
+      let reg = /^\+?[1-9][0-9]*$/; //正整数
+      if (!reg.test(this.finishRes[index].loanamount)) {
+        Toast({
+          message: "放款额度请填入整数",
+          duration: 2000,
+          position: "bottom"
+        });
+      }
       let params = {
         method: "XYJR00004",
         params: {
-          applyId: id,
-          status: this.form.status,
-          loanamount: this.form.loanAmount
+          applyId: this.finishRes[index].id,
+          status: this.finishRes[index].checkedId,
+          loanAmount: this.finishRes[index].loanamount
         }
       };
-      console.log(params);
-      return;
       const res = await this.$http.post("/apicenter/rest/post", params);
-      console.log(res);
+      if ((res.resultCode = "0000")) {
+        this.finishRes[index].operatestatus = res.result.operatestatus;
+        this.finishRes[index].loanamount = res.result.loanamount;
+      }
     }
   }
 };
@@ -442,7 +463,6 @@ export default {
       }
       .order-detail {
         flex: 1;
-        // margin-top: px(13);
         line-height: px(24);
         .order-detail-item {
           display: flex;
@@ -490,9 +510,6 @@ export default {
                   flex: 1;
                   padding-right: 10px;
                   background: #ebebeb;
-                }
-                .input-group-addon {
-                  //   flex: 0;
                 }
               }
             }
