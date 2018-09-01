@@ -161,13 +161,6 @@ export default {
     //返回
     fallback() {
       this.$router.go(-2);
-      //   this.$router.push({
-      //     path: "./home",
-      //     query: {
-      //       wdbm: this.$store.state.umbrella.wdbm,
-      //       code: this.$store.state.umbrella.code
-      //     }
-      //   });
     }
   }
 };

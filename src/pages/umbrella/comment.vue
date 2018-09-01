@@ -3,7 +3,7 @@
 		<div v-show="ok">
 			<mt-radio title="请做出评价" v-model="value" :options="commentSelect" class="radios"></mt-radio>
 			<div class="textarea">
-				<mt-field placeholder="请您对本次服务进行评价…" type="textarea" rows="9" v-model="commentText"></mt-field>
+				<mt-field placeholder="请您对本次服务进行评价（限制85个字）…" type="textarea" rows="9" v-model="commentText"></mt-field>
 			</div>
 			<div class="note">
 				注意事项：<br/> 1.请认真填写对本次服务的评价。
@@ -74,12 +74,20 @@ export default {
     //验证输入
     checkInput() {
       if (!this.value || !this.commentText) {
-		  alert(1)
         Toast({
           message: "评价不能为空",
           duration: 2000,
           position: "bottom"
         });
+        return false;
+      }
+      if (this.commentText.length > 85) {
+        Toast({
+          message: "评价不能超过85个字",
+          duration: 2000,
+          position: "bottom"
+		});
+		this.commentText=this.commentText.slice(0,85);
         return false;
       }
       return true;
