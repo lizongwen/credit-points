@@ -10,7 +10,7 @@
 				<mt-search class="search-wrap" v-model="searchValue1" cancel-text="取消" placeholder="输入姓名、电话号码或身份证号" :show="true" :result="unsureRes" @keyup.enter.native="unsureSearch">
 					<div class="content-padded">
 						<mt-loadmore :top-method="updateOrder1" :auto-fill="false" :bottom-method="loadBottom1" :bottom-all-loaded="allLoaded1" bottomPullText="上拉加载" bottomDropText="释放加载更多" ref="loadmore1">
-							<div class="order-list">
+							<div class="order-list" :style="{'min-height':ordersHeight}">
 								<div class="order-item border-b-1px" v-for="(order,index) in unsureRes" :key="index">
 									<div class="order-detail">
 										<div class="order-detail-item">
@@ -43,7 +43,7 @@
 				<mt-search class="search-wrap" v-model="searchValue2" cancel-text="取消" placeholder="输入姓名、电话号码或身份证号" :show="true" :result="acceptRes" @keyup.enter.native="acceptSearch">
 					<div class="content-padded">
 						<mt-loadmore :top-method="updateOrder2" :auto-fill="false" :bottom-method="loadBottom2" :bottom-all-loaded="allLoaded2" bottomPullText="上拉加载" bottomDropText="释放加载更多" ref="loadmore2">
-							<div class="order-list">
+							<div class="order-list" :style="{'min-height':ordersHeight}">
 								<div class="order-item border-b-1px" v-for="(order,index) in acceptRes" :key="index">
 									<div class="order-detail">
 										<div class="order-detail-item">
@@ -78,7 +78,7 @@
 				<mt-search class="search-wrap" v-model="searchValue3" cancel-text="取消" placeholder="输入姓名、电话号码或身份证号" :show="true" :result="finishRes" @keyup.enter.native="finishSearch">
 					<div class="content-padded">
 						<mt-loadmore :top-method="updateOrder3" :auto-fill="false" :bottom-method="loadBottom3" :bottom-all-loaded="allLoaded3" bottomPullText="上拉加载" bottomDropText="释放加载更多" ref="loadmore3">
-							<div class="order-list">
+							<div class="order-list" :style="{'min-height':ordersHeight}">
 								<div class="order-item border-b-1px" v-for="(order,index) in finishRes" :key="index">
 									<div class="order-detail">
 										<div class="order-detail-item">
@@ -154,6 +154,7 @@ import { Toast } from "mint-ui";
 export default {
   data() {
     return {
+      ordersHeight: "",
       unsureResPageNo: 1,
       acceptResPageNo: 1,
       finishResPageNo: 1,
@@ -178,6 +179,7 @@ export default {
       isPopup: false,
       slots: [
         {
+          flex: 1,
           values: [
             {
               id: 4,
@@ -193,13 +195,10 @@ export default {
           textAlign: "center"
         }
       ]
-      //   form: {
-      //     loanAmount: 0,
-      //     status: 4
-      //   }
     };
   },
   mounted() {
+    this.ordersHeight = (window.innerHeight - 96) / 20 + "rem";
     this.getOrder(1, this.unsureResPageNo, this.searchValue1);
     this.getOrder(2, this.acceptResPageNo, this.searchValue2);
     this.getOrder(3, this.finishResPageNo, this.searchValue3);

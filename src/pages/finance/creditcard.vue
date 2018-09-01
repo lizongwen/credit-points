@@ -14,7 +14,7 @@
 					</div>
 				</div>
 				<div class="r-box">
-					<button class="btn btn-golden" @click="apply">申请</button>
+					<button :class="{'btn-disabled':$store.state.finance.score<800}" class="btn btn-golden" :disabled="$store.state.finance.score<800" @click="apply">申请</button>
 				</div>
 			</li>
 			<li class="credit-card-item">
@@ -27,7 +27,7 @@
 					</div>
 				</div>
 				<div class="r-box">
-					<button class="btn btn-golden" @click="apply">申请</button>
+					<button :class="{'btn-disabled':$store.state.finance.score<850}" class="btn btn-golden" :disabled="$store.state.finance.score<850" @click="apply">申请</button>
 				</div>
 			</li>
 			<li class="credit-card-item">
@@ -40,27 +40,50 @@
 					</div>
 				</div>
 				<div class="r-box">
-					<button class="btn btn-golden btn-disabled" disabled @click="apply">申请</button>
+					<button :class="{'btn-disabled':$store.state.finance.score<900}" class="btn btn-golden" :disabled="$store.state.finance.score<900" @click="apply">申请</button>
 				</div>
 			</li>
 		</ul>
 		<div class="score-tip">乐惠分
-			<span class="score">999</span>
+			<span class="score">{{$store.state.finance.score}}</span>
 		</div>
 	</div>
 </template>
 
 <script>
+import { Toast } from "mint-ui";
 export default {
   data() {
     return {};
   },
   mounted() {},
   methods: {
-    apply() {
-      let url =
-        "https://creditcard.cmbc.com.cn/wsv2/?enstr=D5BPBrUR4ksuO2c5rku%2f49hNZgDUiVUadCIevSHNs%2bkF2eQ0XghIyNLT5ExxEGbXkni66LncfY8OLaITZQdNdoTlQrViDuMMpTiD4XSAJlt6rdy%2fbLoG5Z%2fnipfK1fmqq9LJb2RmfHkOAEGU8BvIPj8UdbqetSKvpUlTMvhci7odCQcEqTTyFYTxFwvAkeVAByR0qbUIt6y%2frkN7%2bXvqSkK44xTiQJn79pJET6ASYw8ZZBd9Hdkc9TS9I8pbclDpf8UNQ882%2f5lOX1Ufv2w3kedK9p9sRXgaDC%2faruIueJcjZzgkcNMQ%2fbpCiriDQVX83siIL6j5bZYVvgj0%2bQ9N%2fg%3d%3d";
-      location.href = url;
+    apply: async function() {
+      let params = {
+        method: "XYJR00010",
+        params: {
+          userid: this.$store.state.finance.userId,
+          username: this.$store.state.finance.userName,
+          userphone: this.$store.state.finance.userPhone,
+          useridcard: this.$store.state.finance.useridcard,
+          usercreditscore: this.$store.state.finance.score,
+          incentivename: this.$route.query.incentivename,
+          incentiveid: this.$route.query.incentiveid,
+          venueid: this.$route.query.venueid
+        }
+      };
+      const res = await this.$http.post("/apicenter/rest/post", params);
+      if (res.resultCode == "0000") {
+        let url =
+          "https://creditcard.cmbc.com.cn/wsv2/?enstr=D5BPBrUR4ksuO2c5rku%2f49hNZgDUiVUadCIevSHNs%2bkF2eQ0XghIyNLT5ExxEGbXkni66LncfY8OLaITZQdNdoTlQrViDuMMpTiD4XSAJlt6rdy%2fbLoG5Z%2fnipfK1fmqq9LJb2RmfHkOAEGU8BvIPj8UdbqetSKvpUlTMvhci7odCQcEqTTyFYTxFwvAkeVAByR0qbUIt6y%2frkN7%2bXvqSkK44xTiQJn79pJET6ASYw8ZZBd9Hdkc9TS9I8pbclDpf8UNQ882%2f5lOX1Ufv2w3kedK9p9sRXgaDC%2faruIueJcjZzgkcNMQ%2fbpCiriDQVX83siIL6j5bZYVvgj0%2bQ9N%2fg%3d%3d";
+        location.href = url;
+      } else {
+        Toast({
+          message: res.resultMsg,
+          duration: 2000,
+          position: "bottom"
+        });
+      }
     }
   }
 };

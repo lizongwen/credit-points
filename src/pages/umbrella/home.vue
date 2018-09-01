@@ -27,6 +27,7 @@ export default {
       window.getShareData.showTitleBar("true");
     }
     this.$store.commit("umbrella/setCode", this.$route.query.code);
+    this.$store.commit("umbrella/setWdbm", this.$route.query.wdbm);
     this.getWdbm();
     this.getUserInfo();
   },
@@ -34,7 +35,7 @@ export default {
     //获取网点编码
     getWdbm: async function() {
       let params = {
-        code: this.$route.query.wdbm,
+        code: this.$store.state.umbrella.wdbm,
         type: "xyqUser"
       };
       const res = await this.$http.getUser(
@@ -65,6 +66,10 @@ export default {
       this.checkBorrow();
     },
     checkBorrow: async function() {
+      if (this.$store.state.umbrella.creditScore < 800) {
+		this.borrowImg = unborrowImg;
+		return;
+      }
       let params = {
         method: "XYQ00006",
         params: {
@@ -91,6 +96,9 @@ export default {
     //借伞
     borrow() {
       if (this.$store.state.umbrella.isBorrow) {
+        return;
+      }
+      if (this.$store.state.umbrella.creditScore < 800) {
         return;
       }
       this.$router.push("./borrow");

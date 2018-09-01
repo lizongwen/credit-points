@@ -73,7 +73,8 @@ export default {
     },
     //验证输入
     checkInput() {
-      if (!this.value && !this.commentText) {
+      if (!this.value || !this.commentText) {
+		  alert(1)
         Toast({
           message: "评价不能为空",
           duration: 2000,
@@ -87,15 +88,7 @@ export default {
     fallback() {
       this.$router.back();
     }
-  },
-//   watch: {
-//     commentText: function(newVal, oldVal) {
-// 		console.log(newVal.length > 10)
-//       if (newVal.length >=10) {
-//         this.commentText = oldVal;
-//       }
-//     }
-//   }
+  }
 };
 </script>
 

@@ -33,10 +33,9 @@
 				</div>
 			</mt-tab-container-item>
 			<mt-tab-container-item id="2" class="finish-wrap" :style="{height:ordersHeight}">
-				<mt-loadmore :top-method="updateOrder" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" bottomPullText="上拉加载" bottomDropText="释放加载更多" ref="loadmore">
-					<div class="order-list">
-						<!-- <div class="order-item border-b-1px"> -->
-							<div class="order-item border-b-1px" v-for="(finish,index) in finishs" :key="index">
+				<mt-loadmore :top-method="updateOrder" :auto-fill="false" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" bottomPullText="上拉加载" bottomDropText="释放加载更多" ref="loadmore">
+					<div class="order-list" :style="{'min-height':ordersHeight}">
+						<div class="order-item border-b-1px" v-for="(finish,index) in finishs" :key="index">
 							<div class="order-avatar">
 								<img src="../../img/finance/micreloan-1.png" />
 							</div>
@@ -59,25 +58,6 @@
 								</div>
 							</div>
 						</div>
-						<!-- <div class="order-item border-b-1px">
-							<div class="order-avatar">
-								<img src="../../img/finance/micreloan-1.png" />
-							</div>
-							<div class="order-detail">
-								<div class="order-detail-item">
-									<div class="key">申请人：</div>
-									<div class="value">马冬梅</div>
-								</div>
-								<div class="order-detail-item">
-									<div class="key">申请时间：</div>
-									<div class="value">2018-12-05</div>
-								</div>
-								<div class="order-detail-item">
-									<div class="key">申请产品：</div>
-									<div class="value">申请100万贷款</div>
-								</div>
-							</div>
-						</div> -->
 					</div>
 				</mt-loadmore>
 			</mt-tab-container-item>
@@ -124,7 +104,7 @@ export default {
           val = "放款通过";
           break;
         case "5":
-          val = "初审通过但放款未通过";
+          val = "复核未通过";
           break;
         default:
           val = "";
@@ -170,13 +150,13 @@ export default {
     },
     //下拉更新
     updateOrder() {
-      this.unfinish = [];
-      //  this.getOrderList(1, 3);
+      this.finishs = [];
+      this.getOrderList(1, 2);
       this.$refs.loadmore.onTopLoaded();
     },
     //上拉加载
     loadBottom() {
-      //this.getOrderList(this.pageNo, 3);
+      this.getOrderList(this.pageNo, 2);
       this.$refs.loadmore.onBottomLoaded();
     }
   }
@@ -229,7 +209,7 @@ export default {
     }
   }
   .finish-wrap {
-    overflow: auto;
+    overflow: scroll;
   }
 }
 </style>

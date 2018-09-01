@@ -7,6 +7,7 @@ const umbrella = {
 		useridcard:'',
 		creditScore:'',
 		code:'',
+		wdbm:'',
 		isBorrow: true,
 		venueId:''
 	},
@@ -18,6 +19,9 @@ const umbrella = {
 		},
 		setCode(state,code){
 			state.code=code;
+		},
+		setWdbm(state,wdbm){
+			state.wdbm=wdbm;
 		},
 		setUserId(state,id){
 			state.userId=id;

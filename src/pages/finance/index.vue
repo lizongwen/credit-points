@@ -37,18 +37,6 @@
 							<p class="name">{{incentive.incentivename}}</p>
 							<p class="score">乐惠分{{incentive.incentivescore}}</p>
 						</div>
-						<!-- <div class="item">
-							<img v-if="$store.state.finance.score>=800" src="../../img/finance/xwd@3x.png" @click="goCreditCard">
-							<img v-else src="../../img/finance/micreloan-1.png">
-							<p class="name">信用卡申请</p>
-							<p class="score">乐惠分800</p>
-						</div>
-						<div class="item">
-							<img v-if="$store.state.finance.score>=850" src="../../img/finance/xyk.png" @click="goMicreLoan">
-							<img v-else src="../../img/finance/card-1.png">
-							<p class="name">小微贷款</p>
-							<p class="score">乐惠分850</p>
-						</div> -->
 					</div>
 				</div>
 			</div>
@@ -193,7 +181,8 @@ export default {
       right: 0;
       top: px(16);
       background: #fde728;
-      padding: px(3) px(8);
+      padding: px(3) px(5) px(3) px(10);
+      border-radius: 0.65rem 0 0 0.65rem;
     }
   }
   .index-box {

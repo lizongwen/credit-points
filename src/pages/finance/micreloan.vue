@@ -17,32 +17,6 @@
 					<button class="btn btn-golden" :class="{'btn-disabled':$store.state.finance.score<800||total>0}" :disabled="$store.state.finance.score<800||total>0" @click="apply(incentive.incentivename,incentive.id)">申请</button>
 				</div>
 			</li>
-			<!-- <li class="micreloan-item">
-				<div class="l-box">
-					<img src="../../img/finance/micreloan-2.png">
-					<div class="content">
-						<p class="title">最高额度
-							<span>50</span>万元</p>
-						<p class="desc">乐惠分850以上</p>
-					</div>
-				</div>
-				<div class="r-box">
-					<button class="btn btn-golden" :class="{'btn-disabled':$store.state.finance.score<850||total>0}" :disabled="$store.state.finance.score<800||total>0" @click="apply(50)">申请</button>
-				</div>
-			</li>
-			<li class="micreloan-item">
-				<div class="l-box">
-					<img src="../../img/finance/micreloan-3.png">
-					<div class="content">
-						<p class="title">最高额度
-							<span>100</span>万元</p>
-						<p class="desc">乐惠分900以上</p>
-					</div>
-				</div>
-				<div class="r-box">
-					<button class="btn btn-golden" :class="{'btn-disabled':$store.state.finance.score<900||total>0}" :disabled="$store.state.finance.score<800||total>0" @click="apply(100)">申请</button>
-				</div>
-			</li> -->
 		</ul>
 		<div class="score-tip">乐惠分
 			<span class="score">{{$store.state.finance.score}}</span>
@@ -60,7 +34,7 @@ export default {
     };
   },
   mounted() {
-	this.getIncentive()
+    this.getIncentive();
     this.getIsApply();
   },
   methods: {
@@ -74,9 +48,9 @@ export default {
       };
       const res = await this.$http.post("/apicenter/rest/post", params);
       if (res.resultCode == "0000") {
-		  if(res.result.length){
- 			this.incentives=res.result
-		  }
+        if (res.result.length) {
+          this.incentives = res.result;
+        }
       } else {
         Toast({
           message: res.resultMsg,
@@ -91,12 +65,12 @@ export default {
       let params = {
         method: "XYJR00008",
         params: {
-          userId: this.$store.state.finance.userId
+          userid: this.$store.state.finance.userId,
+          incentiveid: this.$route.query.incentiveid
         }
       };
       const res = await this.$http.post("/apicenter/rest/post", params);
       if (res.resultCode == "0000") {
-		  console.log(res)
         this.total = res.result.total;
       } else {
         Toast({
@@ -106,13 +80,13 @@ export default {
         });
       }
     },
-    apply(val,id) {
+    apply(val, id) {
       this.$router.push({
         path: "/finance/applyloan",
         query: {
-		  	incentivename: val,
-			venueid:this.$route.query.venueid,
-			incentiveid:id
+          incentivename: val,
+          venueid: this.$route.query.venueid,
+          incentiveid: id
         }
       });
     }

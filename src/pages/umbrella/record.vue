@@ -12,7 +12,7 @@
 				</mt-tab-container-item>
 				<mt-tab-container-item id="2" class="unfinish-wrap" :style="{height:ordersHeight}">
 					<mt-loadmore :top-method="updateOrder" :bottom-method="loadBottom" bottomPullText="上拉加载" bottomDropText="释放加载更多" :bottom-all-loaded="allLoaded" ref="loadmore">
-						<order-list :hasbtn="true" :orders="unfinish" ></order-list>
+						<order-list :hasbtn="true" :orders="unfinish" :style="{'min-height':ordersHeight}"></order-list>
 					</mt-loadmore>
 				</mt-tab-container-item>
 			</mt-tab-container>
@@ -29,13 +29,13 @@ export default {
       selected: "1",
       finish: [],
       unfinish: [],
-	  pageNo: 1,
-	  ordersHeight:"",
-	  allLoaded:false
+      pageNo: 1,
+      ordersHeight: "",
+      allLoaded: false
     };
   },
   mounted() {
-	  this.ordersHeight=(window.innerHeight-53)/20-8+'rem';
+    this.ordersHeight = (window.innerHeight - 53) / 20 - 8 + "rem";
     //获取未完成订单
     this.getOrderList(1, 1);
     // //获取已完成订单
@@ -57,9 +57,9 @@ export default {
         if (status == 1) {
           this.finish = res.result;
         } else if (status == 3) {
-			if(res.result.length<10){
-				this.allLoaded=true;
-			}
+          if (res.result.length < 10) {
+            this.allLoaded = true;
+          }
           this.unfinish = this.unfinish.concat(res.result);
           ++this.pageNo;
         }
@@ -107,7 +107,7 @@ export default {
   }
   .tab-wrap {
     .unfinish-wrap {
-	  overflow: auto;
+      overflow: auto;
     }
   }
 }

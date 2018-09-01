@@ -24,7 +24,7 @@
 						</span>
 					</div>
 					<div class="value">
-						<input type="text" placeholder="请输入联系电话" v-model="form.searchText">
+						<input type="text" :placeholder="placeholder" v-model="form.searchText">
 					</div>
 				</div>
 			</form>
@@ -38,7 +38,7 @@
 			<button class="btn btn-default btn-large" @click="fallback">返回</button>
 		</div>
 		<mt-popup v-model="isPopup" position="bottom" class="popup">
-			<mt-picker :slots="slots" @change="onValuesChange" value-key="label" showToolbar="true">
+			<mt-picker :slots="slots" @change="onValuesChange" value-key="label" :showToolbar="true">
 				<div class="picker-tool-bar">
 					<button class="btn btn-default btn-small fl" @click="cancel">取消</button>
 					<button class="btn btn-primary btn-small fr" @click="esure">确定</button>
@@ -54,22 +54,24 @@ export default {
   data() {
     return {
       //替人还伞表单
+      placeholder: "请输入联系电话",
       pickerValue: "联系电话",
       person: "",
       form: {
         user: "",
         searchText: "",
         type: 1
-	  },
-	  pickerTemp:{
-		  value:'',
-		  id:''
-	  },
+      },
+      pickerTemp: {
+        value: "",
+        id: ""
+      },
       ok: true,
       checked: false,
       isPopup: false,
       slots: [
         {
+          flex: 1,
           values: [
             {
               id: 1,
@@ -117,13 +119,15 @@ export default {
       this.isPopup = true;
     },
     onValuesChange(picker, values) {
-		this.pickerTemp.value=values[0].label;
-		this.pickerTemp.id=values[0].id;
-	},
+      this.pickerTemp.value = values[0].label;
+      this.pickerTemp.id = values[0].id;
+    },
     esure() {
-      this.pickerValue =this.pickerTemp.value;
-	  this.form.type = this.pickerTemp.id;
-	  this.isPopup = false;
+      this.pickerValue = this.pickerTemp.value;
+      this.form.type = this.pickerTemp.id;
+      this.placeholder =
+        this.form.type == 1 ? "请输入联系电话" : "请输入证件号码";
+      this.isPopup = false;
     },
     cancel() {
       this.isPopup = false;
@@ -156,7 +160,14 @@ export default {
     },
     //返回
     fallback() {
-      this.$router.push("./home");
+      this.$router.go(-2);
+      //   this.$router.push({
+      //     path: "./home",
+      //     query: {
+      //       wdbm: this.$store.state.umbrella.wdbm,
+      //       code: this.$store.state.umbrella.code
+      //     }
+      //   });
     }
   }
 };
@@ -183,11 +194,11 @@ export default {
             border-width: px(8) px(4);
           }
           .picker-icon-up {
-            top: px(-5);
+            top: px(-8);
             border-color: transparent transparent $bd-default transparent;
           }
           .picker-icon-down {
-            top: px(14);
+            top: px(10);
             border-color: $bd-default transparent transparent transparent;
           }
         }

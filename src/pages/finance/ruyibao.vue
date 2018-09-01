@@ -26,7 +26,7 @@
 			<button class="btn btn-block btn-large btn-golden" @click="submit">确认申请</button>
 		</div>
 		<div class="score-tip">乐惠分
-			<span class="score">999</span>
+			<span class="score">{{$store.state.finance.score}}</span>
 		</div>
 	</div>
 </template>
@@ -37,7 +37,21 @@ export default {
     return {};
   },
   methods: {
-    submit() {
+    submit: async function() {
+      let params = {
+        method: "XYJR00009",
+        params: {
+          userid: this.$store.state.finance.userId,
+          username: this.$store.state.finance.userName,
+          userphone: this.$store.state.finance.userPhone,
+          useridcard: this.$store.state.finance.useridcard,
+          usercreditscore: this.$store.state.finance.score,
+          incentivename: this.$route.query.incentivename,
+          incentiveid: this.$route.query.incentiveid,
+          venueid: this.$route.query.venueid
+        }
+      };
+      const res = await this.$http.post("/apicenter/rest/post", params);
       let url =
         "https://www.mszxyh.com/wapserver/outer/index.html?ChannelId=mszx02489&amp;seq=DZZH_20180807136949&Page=ryb";
       location.href = url;
