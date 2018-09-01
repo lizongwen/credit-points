@@ -30,19 +30,10 @@ let financeRouter = [
 		name: 'finance_loanlist',
 		component: () => import('@/pages/finance/loanlist.vue')
 	},{
-		path: '/finance/admin',
-		name: 'finance_admin',
-		component: () => import('@/pages/finance/adminlogin.vue')
-	},{
 		path: '/finance/admin/list',
 		name: 'finance_adminlist',
 		component: () => import('@/pages/finance/adminlist.vue')
-	},{
-		path: '/finance/admin/test',
-		name: 'finance_admintest',
-		component: () => import('@/pages/finance/test.vue')
-	},
-	
+	}
 ]
 
 export default financeRouter;
