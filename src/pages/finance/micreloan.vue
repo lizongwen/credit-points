@@ -14,7 +14,7 @@
 					</div>
 				</div>
 				<div class="r-box">
-					<button class="btn btn-golden" :class="{'btn-disabled':$store.state.finance.score<800||total>0}" :disabled="$store.state.finance.score<800||total>0" @click="apply(incentive.incentivename,incentive.id)">申请</button>
+					<button class="btn btn-golden" :class="{'btn-disabled':$store.state.finance.score<incentive.incentivescore||total>0}" :disabled="$store.state.finance.score<incentive.incentivescore||total>0" @click="apply(incentive.incentivename,incentive.id)">申请</button>
 				</div>
 			</li>
 		</ul>

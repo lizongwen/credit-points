@@ -61,6 +61,9 @@ export default {
     };
   },
   mounted() {
+    if (sessionStorage.getItem("financeState") != null) {
+      sessionStorage.removeItem("financeState");
+    }
     this.$store.commit("finance/setUserId", this.$route.query.userId);
     this.$store.commit("finance/setScore", this.$route.query.score);
     this.$store.commit("finance/setUseridcard", this.$route.query.idcard);

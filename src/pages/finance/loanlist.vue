@@ -52,7 +52,7 @@
 									<div class="key">申请产品：</div>
 									<div class="value">{{finish.incentivenames}}</div>
 								</div>
-								<div class="order-detail-item">
+								<div class="order-detail-item" v-if="finish.incentivenames!='信用卡申请'&&finish.incentivenames!='如意宝'">
 									<div class="key">申请状态：</div>
 									<div class="value">{{finish.operatestatus | formatStatus}}</div>
 								</div>
@@ -174,7 +174,7 @@ export default {
     .order-item {
       position: relative;
       display: flex;
-      height: px(123);
+      padding: 0.5rem 0;
       &:not(:last-child) {
         @include border-b-1px(#ebebeb);
       }

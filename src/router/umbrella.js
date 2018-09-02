@@ -2,6 +2,9 @@ let umbrellaRouter = [
 	{
 		path: '/umbrella',
 		name: 'umbrella',
+		meta:{
+			title:'信用伞'
+		},
 		component: () => import('@/pages/umbrella/index.vue')
 	},
 	{

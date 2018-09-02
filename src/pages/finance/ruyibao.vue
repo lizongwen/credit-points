@@ -36,6 +36,23 @@ export default {
   data() {
     return {};
   },
+  mounted() {
+    console.log(this.$store.state.finance);
+    console.log(sessionStorage.getItem("financeState"));
+    if (sessionStorage.getItem("financeState") == null) {
+      sessionStorage.setItem(
+        "financeState",
+        JSON.stringify(this.$store.state.finance)
+      );
+    } else {
+      let financeState = JSON.parse(sessionStorage.getItem("financeState"));
+      this.$store.commit("finance/setUserId", financeState.userId);
+      this.$store.commit("finance/setScore", financeState.score);
+      this.$store.commit("finance/setUseridcard", financeState.useridcard);
+      this.$store.commit("finance/setUserName", financeState.userName);
+      this.$store.commit("finance/setUserPhone", financeState.userPhone);
+    }
+  },
   methods: {
     submit: async function() {
       let params = {
