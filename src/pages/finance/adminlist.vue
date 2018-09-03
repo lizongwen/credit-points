@@ -109,7 +109,7 @@
 												<div class="key">放款额度：</div>
 												<div class="value">
 													<div class="input-group">
-														<input type="text" class="mui-input-clear" placeholder="账号" v-model="order.loanamount">
+														<input type="text" class="mui-input-clear" placeholder="放款额度" v-model="order.loanamount">
 														<div class="input-group-addon">万元</div>
 													</div>
 												</div>
