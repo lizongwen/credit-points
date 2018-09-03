@@ -1,7 +1,8 @@
 <template>
 	<div class="home">
 		<div class="wrap">
-			<img :src="borrowImg" @click="borrow">
+			<img :src="borrowImg" @click="borrow" v-if="this.$store.state.umbrella.creditScore>=800&&!this.$store.state.umbrella.isBorrow">
+			<img :src="unborrowImg" v-else>
 			<span class="label">借 伞</span>
 			<img src="../../img/umbrella/remand.png" style="margin-top:40px;" @click="remand">
 			<span class="label">还 伞</span>
@@ -17,6 +18,7 @@ import { Toast } from "mint-ui";
 export default {
   data() {
     return {
+      unborrowImg: unborrowImg,
       borrowImg: borrowImg,
       isBorrow: true
     };
@@ -26,10 +28,15 @@ export default {
       window.getShareData.ClearHistory("true");
       window.getShareData.showTitleBar("true");
     }
-    this.$store.commit("umbrella/setCode", this.$route.query.code);
+    if (!sessionStorage.getItem("umbrellaCode")) {
+      this.$store.commit("umbrella/setCode", this.$route.query.code);
+      sessionStorage.setItem("umbrellaCode", this.$route.query.code);
+      this.getUserInfo();
+    } else {
+      this.checkBorrow();
+    }
     this.$store.commit("umbrella/setWdbm", this.$route.query.wdbm);
     this.getWdbm();
-    this.getUserInfo();
   },
   methods: {
     //获取网点编码
@@ -39,7 +46,7 @@ export default {
         type: "xyqUser"
       };
       const res = await this.$http.getUser(
-        "/h5web/credit/common/venue/getWdbmByCode",
+        "/credit/common/venue/getWdbmByCode",
         params
       );
       if (res) {
@@ -53,7 +60,7 @@ export default {
         type: "xyqUser"
       };
       const res = await this.$http.getUser(
-        "/h5web/credit/common/user/getUserInfoByCode",
+        "/credit/common/user/getUserInfoByCode",
         // "/qtweb/credit/common/user/getUserInfoByCode",
         params
       );
@@ -66,10 +73,10 @@ export default {
       this.checkBorrow();
     },
     checkBorrow: async function() {
-      if (this.$store.state.umbrella.creditScore < 800) {
-		this.borrowImg = unborrowImg;
-		return;
-      }
+    //   if (this.$store.state.umbrella.creditScore < 800) {
+    //     this.borrowImg = unborrowImg;
+    //     return;
+    //   }
       let params = {
         method: "XYQ00006",
         params: {
@@ -80,10 +87,10 @@ export default {
       if (res.resultCode == "0000") {
         if (res.result > 0) {
           this.$store.state.umbrella.isBorrow = true;
-          this.borrowImg = unborrowImg;
+        //   this.borrowImg = unborrowImg;
         } else {
           this.$store.state.umbrella.isBorrow = false;
-          this.borrowImg = borrowImg;
+        //   this.borrowImg = borrowImg;
         }
       } else {
         Toast({
@@ -121,7 +128,7 @@ export default {
 .home {
   position: relative;
   height: 100%;
-  background: url("../../img/umbrella/home_bg@3x.png") no-repeat center;
+  background: url("../../img/umbrella/home_bg@3x.jpg") no-repeat center;
   background-size: cover;
   text-align: center;
   .wrap {

@@ -409,16 +409,19 @@ export default {
           position: "bottom"
         });
         return;
+	  }
+      if (this.finishRes[index].checkedId != 5) {
+        let reg = /^\+?[1-9][0-9]*$/; //正整数
+        if (!reg.test(this.finishRes[index].loanamount)) {
+          Toast({
+            message: "放款额度请填入整数",
+            duration: 2000,
+            position: "bottom"
+          });
+          return;
+        }
       }
-      let reg = /^\+?[1-9][0-9]*$/; //正整数
-      if (!reg.test(this.finishRes[index].loanamount)) {
-        Toast({
-          message: "放款额度请填入整数",
-          duration: 2000,
-          position: "bottom"
-		});
-		return;
-      }
+
       let params = {
         method: "XYJR00004",
         params: {
@@ -426,7 +429,7 @@ export default {
           status: this.finishRes[index].checkedId,
           loanAmount: this.finishRes[index].loanamount
         }
-      };
+	  };
       const res = await this.$http.post("/apicenter/rest/post", params);
       if ((res.resultCode = "0000")) {
         this.finishRes[index].operatestatus = res.result.operatestatus;

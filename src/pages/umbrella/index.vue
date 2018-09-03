@@ -35,18 +35,18 @@ export default {
       selected: "1",
       finish: [],
       unfinish: [],
-	  pageNo: 1,
-	  ordersHeight:'',
-	  allLoaded:false
+      pageNo: 1,
+      ordersHeight: "",
+      allLoaded: false
     };
   },
   mounted() {
-	 this.ordersHeight=(window.innerHeight-53)/20+'rem';
-	//获取未完成订单
+    sessionStorage.removeItem("umbrellaCode");
+    this.ordersHeight = (window.innerHeight - 53) / 20 + "rem";
+    //获取未完成订单
     this.getOrderList(1, 1);
     //获取已完成订单
-	this.getOrderList(this.pageNo, 3);
-	
+    this.getOrderList(this.pageNo, 3);
   },
   methods: {
     getOrderList: async function(pageNo, status) {
@@ -59,34 +59,34 @@ export default {
           pageSize: 10
         }
       };
-	  const res = await this.$http.post("/apicenter/rest/post", params);
-	  if(res.resultCode=='0000'){
-		   if (status == 1) {
-				this.finish = res.result;
-			} else if (status == 3) {
-				if(res.result.length<10){
-					this.allLoaded=true;
-				}
-				this.unfinish = this.unfinish.concat(res.result);
-				++this.pageNo;
-			}
-	  }else{
-		Toast({
+      const res = await this.$http.post("/apicenter/rest/post", params);
+      if (res.resultCode == "0000") {
+        if (status == 1) {
+          this.finish = res.result;
+        } else if (status == 3) {
+          if (res.result.length < 10) {
+            this.allLoaded = true;
+          }
+          this.unfinish = this.unfinish.concat(res.result);
+          ++this.pageNo;
+        }
+      } else {
+        Toast({
           message: res.resultMsg,
           duration: 2000,
           position: "bottom"
         });
-	  }
+      }
     },
-	//扫码
+    //扫码
     scan() {
       location.href = "citytoken://openvc?vcname=capture";
       //this.$router.push("./umbrella/home");
     },
-	//显示网点
-	showDot(){
-		this.$router.push("./umbrella/netdot");
-	},
+    //显示网点
+    showDot() {
+      this.$router.push("./umbrella/netdot");
+    },
     //下拉更新
     updateOrder() {
       this.unfinish = [];
@@ -95,7 +95,7 @@ export default {
     },
     //上拉加载
     loadBottom() {
-      this.getOrderList(this.pageNo,3);
+      this.getOrderList(this.pageNo, 3);
       this.$refs.loadmore.onBottomLoaded();
     }
   },
@@ -127,9 +127,9 @@ export default {
     padding-top: px(15);
     padding-bottom: px(15);
     background-color: $bg-grey;
-	.h10{
-		height: 10px;
-	}
+    .h10 {
+      height: 10px;
+    }
     .scaner-desc {
       margin-top: px(10);
       font-size: px(12);
@@ -138,7 +138,7 @@ export default {
   }
   .tab-wrap {
     .unfinish-wrap {
-	  overflow: auto;
+      overflow: auto;
     }
   }
 }

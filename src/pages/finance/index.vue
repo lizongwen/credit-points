@@ -54,7 +54,7 @@ import { Toast } from "mint-ui";
 export default {
   data() {
     return {
-      adminFlag: true,
+      adminFlag: false,
       total: 0,
       banks: [],
       incentives: []
@@ -80,7 +80,7 @@ export default {
         idcard: this.$route.query.idcard
       };
       const res = await this.$http.getUser(
-        "/h5web/credit/common/admin/checkIsAdmin",
+        "/credit/common/admin/checkIsAdmin",
         params
       );
       if (res.resultCode == "0000") {
@@ -93,7 +93,7 @@ export default {
         idcard: this.$route.query.idcard
       };
       const res = await this.$http.getUser(
-        "/h5web/credit/common/user/getUserInfoByIdcard",
+        "/credit/common/user/getUserInfoByIdcard",
         // "/qtweb/credit/common/user/getUserInfoByIdcard",
         params
       );
@@ -180,6 +180,7 @@ export default {
     background: url("../../img/finance/banner@2x.png") no-repeat center;
     background-size: cover;
     .admin-flag {
+      font-size: px(14);
       position: absolute;
       right: 0;
       top: px(16);

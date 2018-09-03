@@ -5,61 +5,65 @@
 			<mt-tab-item id="2">已完成</mt-tab-item>
 		</mt-navbar>
 		<mt-tab-container v-model="selected">
-			<mt-tab-container-item id="1">
-				<div class="order-list">
-					<div class="order-item border-b-1px" v-for="(unfinish,index) in unfinishs" :key="index">
-						<div class="order-avatar">
-							<img src="../../img/finance/xwd@3x.png" />
-						</div>
-						<div class="order-detail">
-							<div class="order-detail-item">
-								<div class="key">申请人：</div>
-								<div class="value">{{unfinish.username}}</div>
+			<mt-tab-container-item id="1" class="unfinish-wrap">
+				<div class="content-padded">
+					<div class="order-list" :style="{'min-height':ordersHeight}">
+						<div class="order-item border-b-1px" v-for="(unfinish,index) in unfinishs" :key="index">
+							<div class="order-avatar">
+								<img src="../../img/finance/xwd@3x.png" />
 							</div>
-							<div class="order-detail-item">
-								<div class="key">申请时间：</div>
-								<div class="value">{{unfinish.applystarttime}}</div>
-							</div>
-							<div class="order-detail-item">
-								<div class="key">申请产品：</div>
-								<div class="value">{{unfinish.incentivenames}}</div>
-							</div>
-							<div class="order-detail-item">
-								<div class="key">申请状态：</div>
-								<div class="value">{{unfinish.operatestatus | formatStatus}}</div>
+							<div class="order-detail">
+								<div class="order-detail-item">
+									<div class="key">申请人：</div>
+									<div class="value">{{unfinish.username}}</div>
+								</div>
+								<div class="order-detail-item">
+									<div class="key">申请时间：</div>
+									<div class="value">{{unfinish.applystarttime}}</div>
+								</div>
+								<div class="order-detail-item">
+									<div class="key">申请产品：</div>
+									<div class="value">{{unfinish.incentivenames}}</div>
+								</div>
+								<div class="order-detail-item">
+									<div class="key">申请状态：</div>
+									<div class="value">{{unfinish.operatestatus | formatStatus}}</div>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</mt-tab-container-item>
-			<mt-tab-container-item id="2" class="finish-wrap" :style="{height:ordersHeight}">
-				<mt-loadmore :top-method="updateOrder" :auto-fill="false" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" bottomPullText="上拉加载" bottomDropText="释放加载更多" ref="loadmore">
-					<div class="order-list" :style="{'min-height':ordersHeight}">
-						<div class="order-item border-b-1px" v-for="(finish,index) in finishs" :key="index">
-							<div class="order-avatar">
-								<img src="../../img/finance/micreloan-1.png" />
-							</div>
-							<div class="order-detail">
-								<div class="order-detail-item">
-									<div class="key">申请人：</div>
-									<div class="value">{{finish.username}}</div>
+			<mt-tab-container-item id="2" class="finish-wrap">
+				<div class="content-padded">
+					<mt-loadmore :top-method="updateOrder" :auto-fill="false" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" bottomPullText="上拉加载" bottomDropText="释放加载更多" ref="loadmore">
+						<div class="order-list" :style="{'min-height':ordersHeight}">
+							<div class="order-item border-b-1px" v-for="(finish,index) in finishs" :key="index">
+								<div class="order-avatar">
+									<img src="../../img/finance/micreloan-1.png" />
 								</div>
-								<div class="order-detail-item">
-									<div class="key">申请时间：</div>
-									<div class="value">{{finish.applystarttime}}</div>
-								</div>
-								<div class="order-detail-item">
-									<div class="key">申请产品：</div>
-									<div class="value">{{finish.incentivenames}}</div>
-								</div>
-								<div class="order-detail-item" v-if="finish.incentivenames!='信用卡申请'&&finish.incentivenames!='如意宝'">
-									<div class="key">申请状态：</div>
-									<div class="value">{{finish.operatestatus | formatStatus}}</div>
+								<div class="order-detail">
+									<div class="order-detail-item">
+										<div class="key">申请人：</div>
+										<div class="value">{{finish.username}}</div>
+									</div>
+									<div class="order-detail-item">
+										<div class="key">申请时间：</div>
+										<div class="value">{{finish.applystarttime}}</div>
+									</div>
+									<div class="order-detail-item">
+										<div class="key">申请产品：</div>
+										<div class="value">{{finish.incentivenames}}</div>
+									</div>
+									<div class="order-detail-item" v-if="finish.incentivenames!='信用卡申请'&&finish.incentivenames!='如意宝'">
+										<div class="key">申请状态：</div>
+										<div class="value">{{finish.operatestatus | formatStatus}}</div>
+									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-				</mt-loadmore>
+					</mt-loadmore>
+				</div>
 			</mt-tab-container-item>
 		</mt-tab-container>
 	</div>
@@ -80,6 +84,7 @@ export default {
   },
   mounted() {
     this.ordersHeight = (window.innerHeight - 52) / 20 + "rem";
+
     //获取未完成订单
     this.getOrderList(1, 1);
     // //获取已完成订单
@@ -208,8 +213,13 @@ export default {
       }
     }
   }
+  .unfinish-wrap,
   .finish-wrap {
-    overflow: scroll;
+    height: calc(100vh - #{px(52)});
+    .content-padded {
+      height: 100%;
+      overflow: scroll;
+    }
   }
 }
 </style>
