@@ -416,7 +416,8 @@ export default {
           message: "放款额度请填入整数",
           duration: 2000,
           position: "bottom"
-        });
+		});
+		return;
       }
       let params = {
         method: "XYJR00004",
