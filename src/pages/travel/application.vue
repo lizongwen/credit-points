@@ -15,7 +15,7 @@
             <span>请等待管理人员审批处理 </span>
         </div>
         <div class="application-btn">
-            <button class="btn application-btn-return">返&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;回</button>
+            <button class="btn application-btn-return" @click="goBack">返&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;回</button>
         </div>
       </div>
       <div class="submit-application" v-else-if="status === 2">
@@ -59,9 +59,14 @@ export default {
         }
     },
     methods: {
-
+        goBack() {
+            this.$router.push({
+                name: 'travel'
+            });
+        }
     },
     mounted() {
+        this.status = this.$store.state.travel.status;
     }
 };
 </script>
@@ -90,7 +95,7 @@ export default {
             line-height: px(21);
             margin-top: px(20);
         }
-        .submit-title-unpass{
+        .submit-title-unpass {
             margin: 0 auto;
             font-size: px(16);
             line-height: px(21);

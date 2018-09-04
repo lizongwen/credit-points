@@ -21,9 +21,9 @@
     </div>
     <!--contain-->
     <div class="content-padded travel-list">
-      <div class="card" v-for="(car,index) in cars" :key="index" @click="goApplication">
+      <div class="card" v-for="(car,index) in cars" :key="index">
         <div class="card-head">
-          <div class="card-head-title card-head-title-bd-green">{{car.name}}</div>
+          <div class="card-head-title card-head-title-bd-green">{{car.travelname}}</div>
           <div class="card-head-small-title">{{car.description}}</div>
         </div>
         <div class="card-body">
@@ -32,7 +32,8 @@
         <div class="card-foot">
           <div class="travel-wrap">
             <div class="item">
-              <img src="../../img/travel/icon_yajinjianban@2x.png">
+              <img src="../../img/travel/icon_yajinjianban@2x.png" @click="goApplication(index)" v-if="$store.state.travel.score >= car.incentives[0].incentivescore">
+              <img src="../../img/travel/icon_yajinjianban@2x.png" v-else>
               <p class="name">押金减半</p>
               <p class="score">乐惠分900</p>
             </div>
@@ -46,51 +47,115 @@
       <div class="tips-desc">进行中</div>
     </div>
 
-    <div class="score-tip" v-if="role === 'admin'" @click="goAdminPage">
-      <img src="../../img/travel/icon_guanliyuan.png" >
-			<span class="score">管理员</span>
-		</div>
+    <div class="score-tip" v-if="adminFlag" @click="goAdminPage">
+      <img src="../../img/travel/icon_guanliyuan.png">
+      <span class="score">管理员</span>
+    </div>
   </div>
 </template>
 
 <script>
+import utils from "@/js/utils";
+import { Toast } from "mint-ui";
 export default {
   data() {
     return {
       total: 0,
-      role: 'admin',
-      cars: [
-        {
-          name: '易开出行',
-          description: '出行更自由·生活更简单'
-        },
-        {
-          name: '易开出行',
-          description: '出行更自由·生活更简单'
-        }
-      ]
+      adminFlag: true,
+      score: 0,
+      cars: []
     }
   },
   mounted() {
-    // TODO
-    // 押金减半
-    // 图片居中问题
+    utils.dragBall("running");
+    this.$store.commit("travel/setUserId", this.$route.query.userId);
+    this.$store.commit("travel/setScore", this.$route.query.score);
+    this.$store.commit("travel/setUseridcard", this.$route.query.idcard);
+    this.checkIsAdmin();
+    this.getOrderTotal();
+    this.getUserInfo();
+    this.getIndexInfo();
   },
   methods: {
-    toApplicationList(){
+    // 检查是否是管理员
+    checkIsAdmin: async function() {
+      let params = {
+        idcard: this.$route.query.idcard
+      };
+      const res = await this.$http.getUser(
+        "/h5web/credit/common/admin/checkIsAdmin",
+        params
+      );
+      if (res.resultCode == "0000") {
+        this.adminFlag = true;
+      }
+    },
+    //获取用户信息
+    getUserInfo: async function() {
+      let params = {
+        idcard: this.$route.query.idcard
+      };
+      const res = await this.$http.getUser(
+        "/h5web/credit/common/user/getUserInfoByIdcard",
+        // "/qtweb/credit/common/user/getUserInfoByIdcard",
+        params
+      );
+      if (res) {
+        this.$store.commit("travel/setUserName", res.username);
+        this.$store.commit("travel/setUserPhone", res.userphone);
+      }
+    },
+    toApplicationList() {
       this.$router.push({
         name: 'application_list'
       });
     },
-    goApplication(){
+    goApplication(index) {
+      let data = this.cars[index].incentives[0];
+
+      this.$store.commit("travel/setIncentiveId", data.id);
+      this.$store.commit("travel/setIncentiveName", data.incentivename);
+      this.$store.commit("travel/setUsercreditscore", data.incentivescore);
+      this.$store.commit("travel/setVenueId", this.cars[index].id);
       this.$router.push({
         name: 'deposit_halved'
       });
     },
-    goAdminPage(){
+    goAdminPage() {
       this.$router.push({
         name: 'approval'
       });
+    },
+    //获取进行中的申请
+    getOrderTotal: async function() {
+      let params = {
+        method: "XYX00001",
+        params: {
+          userId: this.$store.state.travel.userId
+        }
+      };
+      const res = await this.$http.post("/apicenter/rest/post", params);
+      if (res.resultCode == "0000") {
+        this.total = res.result;
+      } else {
+        Toast({
+          message: res.resultMsg,
+          duration: 2000,
+          position: "bottom"
+        });
+      }
+    },
+    //獲取首頁
+    getIndexInfo: async function() {
+      let params = {
+        method: "XYX00008",
+        params: {}
+      };
+
+      const res = await this.$http.post("/apicenter/rest/post", params);
+      if (res.resultCode == "0000") {
+        this.cars = res.result;
+      }
     }
   }
 }
@@ -197,7 +262,7 @@ export default {
       font-size: px(14);
     }
   }
-    .score-tip {
+  .score-tip {
     position: absolute;
     width: px(82);
     height: px(26);
@@ -210,7 +275,9 @@ export default {
       width: px(20);
       margin: 0 auto;
     }
-    background-image: linear-gradient(-121deg, #FFF551 3%, #FDE728 100%);
+    background-image: linear-gradient(-121deg,
+    #FFF551 3%,
+    #FDE728 100%);
     .score {
       font-size: px(12);
       vertical-align: px(-1);

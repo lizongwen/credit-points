@@ -8,26 +8,52 @@
     <div class="tooltip-text">
       <p>仅针对非易开出行会员</p>
     </div>
-    <div class="content-padded button-bottom" v-if="score >= 800">
-      <button class="btn btn-block btn-deposit-halved btn-golden text-size">确认申请</button>
-    </div>
-    <div class="content-padded button-bottom" v-else>
-      <button disabled class="btn btn-block btn-deposit-halved disabled-btn disabled-text">确认申请</button>
+    <div class="content-padded button-bottom">
+      <button class="btn btn-block btn-deposit-halved btn-golden text-size" @click="getIndexInfo">确认申请</button>
     </div>
   </div>
 </template>
 <script>
+import { Toast } from "mint-ui";
 export default {
   name: "deposit_halved",
   data() {
     return {
-      score: 900
       // TODO
       // 模态框未做
     };
   },
-  methods: {},
+  methods: {
+    getIndexInfo: async function() {
+      let params = {
+        method: "XYX00002",
+        params: {
+          venueId: this.$store.state.travel.venueId,
+          userId: this.$store.state.travel.userId,
+          userName: this.$store.state.travel.userName,
+          userIdCard: this.$store.state.travel.useridcard,
+          userPhone: this.$store.state.travel.userPhone,
+          userCreditScore: this.$store.state.travel.usercreditscore,
+          incentiveId: this.$store.state.travel.incentiveId,
+          incentiveName: this.$store.state.travel.incentiveName,
+        }
+      };
+
+      const res = await this.$http.post("/apicenter/rest/post", params);
+      if (res.resultCode == "0000") {
+        this.$store.commit("travel/setStatus", 1);
+        this.$router.push({
+          name: 'application'
+        });
+      } else {
+        Toast({
+          message: res.resultMsg
+        });
+      }
+    }
+  },
   mounted() {
+
   }
 };
 </script>

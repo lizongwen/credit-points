@@ -19,16 +19,16 @@
             </div>
             <div class="order-detail">
               <div class="order-detail-title">
-                <div class="name">{{application.name}}</div>
-                <div class="remark">({{application.remark}})</div>
+                <div class="name">{{application.username}}</div>
+                <div class="remark">({{application.incentivenames}})</div>
               </div>
               <div class="order-detail-item">
                 <div>申请时间：</div>
-                <div>{{application.time}}</div>
+                <div>{{application.applytime}}</div>
               </div>
               <div class="order-detail-item">
                 <div>申请状态：</div>
-                <div>{{dealStatus(application.status)}}</div>
+                <div>{{dealStatus(application.operatestatus)}}</div>
               </div>
             </div>
           </div>
@@ -37,22 +37,22 @@
       <mt-tab-container-item id="2" class="finish-wrap" :style="{height:ordersHeight}">
         <mt-loadmore :bottom-all-loaded="allLoaded" bottomPullText="上拉加载" bottomDropText="释放加载更多" ref="loadmore">
           <div class="order-list">
-            <div class="order-item border-b-1px" v-for="(application,index) in applications" :key="index">
+            <div class="order-item border-b-1px" v-for="(application,index) in finished" :key="index">
               <div class="order-avatar">
                 <img src="../../img/travel/icon_yikai@2x.png" />
               </div>
               <div class="order-detail">
                 <div class="order-detail-title">
-                  <div class="name">{{application.name}}</div>
-                  <div class="remark">({{application.remark}})</div>
+                  <div class="name">{{application.username}}</div>
+                  <div class="remark">({{application.incentivenames}})</div>
                 </div>
                 <div class="order-detail-item">
                   <div>申请时间：</div>
-                  <div>{{application.time}}</div>
+                  <div>{{application.applytime}}</div>
                 </div>
                 <div class="order-detail-item">
                   <div>申请状态：</div>
-                  <div>{{dealStatus(application.status)}}</div>
+                  <div>{{dealStatus(application.operatestatus)}}</div>
                 </div>
               </div>
             </div>
@@ -68,8 +68,6 @@ export default {
     return {
       allLoaded: false,
       selected: '1',
-      searchValue: '',
-      unsureRes: [],
       ordersHeight: '',
       statusList: [
         {
@@ -85,20 +83,8 @@ export default {
           name: '审核成'
         }
       ],
-      applications: [
-        {
-          name: '易开出行',
-          remark: '押金减半',
-          time: '2018-08-28 12:23',
-          status: 0
-        },
-        {
-          name: '易开出行',
-          remark: '押金减半',
-          time: '2018-08-28 12:23',
-          status: 1
-        }
-      ]
+      applications: [],
+      finished: []
     };
   },
   methods: {
@@ -106,15 +92,35 @@ export default {
       let self = this;
       let data;
       self.statusList.forEach(item => {
-        if (item.id === status) {
+        if (item.id === parseInt(status)) {
           data = item.name;
         }
       });
       return data;
+    },
+    //獲取列表
+    getIndexInfo: async function(type) {
+      let params = {
+        method: "XYX00003",
+        params: {
+          type: type,
+          userId: this.$store.state.travel.userId
+        }
+      };
+      const res = await this.$http.post("/apicenter/rest/post", params);
+      if (res.resultCode == "0000") {
+        if (type === 1) {
+          this.applications = res.result;
+        } else {
+          this.finished = res.result;
+        }
+      }
     }
   },
   mounted() {
     this.ordersHeight = (window.innerHeight - 52) / 20 + "rem";
+    this.getIndexInfo(1);
+    this.getIndexInfo(0);
   }
 }
 </script>
