@@ -336,9 +336,13 @@ input:focus {
 }
 
 .btn-golden {
-    background: #FDE728;
+	background: $btn-golden;
 }
 
+.btn-green{
+	background: $btn-green;
+	color: $text-white;
+}
 .btn-default {
     border: px(1) solid $bd-grey;
     background: $btn-default;

@@ -1,6 +1,3 @@
-/**
-* 易出行首页
-**/
 <template>
   <div class="index">
     <!--header-->
@@ -63,7 +60,7 @@ export default {
       total: 0,
       adminFlag: true,
       score: 0,
-      cars: []
+	  cars: [],
     }
   },
   mounted() {
@@ -97,7 +94,6 @@ export default {
       };
       const res = await this.$http.getUser(
         "/h5web/credit/common/user/getUserInfoByIdcard",
-        // "/qtweb/credit/common/user/getUserInfoByIdcard",
         params
       );
       if (res) {
@@ -112,7 +108,6 @@ export default {
     },
     goApplication(index) {
       let data = this.cars[index].incentives[0];
-
       this.$store.commit("travel/setIncentiveId", data.id);
       this.$store.commit("travel/setIncentiveName", data.incentivename);
       this.$store.commit("travel/setUsercreditscore", data.incentivescore);
@@ -151,7 +146,6 @@ export default {
         method: "XYX00008",
         params: {}
       };
-
       const res = await this.$http.post("/apicenter/rest/post", params);
       if (res.resultCode == "0000") {
         this.cars = res.result;
