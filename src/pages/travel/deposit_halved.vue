@@ -34,7 +34,7 @@ export default {
   name: "deposit_halved",
   data() {
     return {
-      popupVisible: true
+      popupVisible: false
     };
   },
   methods: {
