@@ -101,7 +101,7 @@ export default {
     text-shadow: 0 2px 3px rgba(0, 0, 0, 0.6);
     align-items: center;
     justify-content: center;
-    background: url("../../img/umbrella/banner_record@3x.png") no-repeat center;
+    background: url("../../img/umbrella/banner_record@3x.jpg") no-repeat center;
     background-size: cover;
     color: $text-white;
   }

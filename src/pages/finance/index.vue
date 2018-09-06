@@ -27,7 +27,7 @@
 					<div class="card-head-small-title">{{bank.description}}</div>
 				</div>
 				<div class="card-body">
-					<img src="../../img/finance/ms_bank@2x.png">
+					<img src="../../img/finance/ms_bank@2x.jpg">
 				</div>
 				<div class="card-foot">
 					<div class="finance-wrap">
@@ -177,7 +177,7 @@ export default {
     position: relative;
     display: flex;
     height: px(160);
-    background: url("../../img/finance/banner@2x.png") no-repeat center;
+    background: url("../../img/finance/banner@2x.jpg") no-repeat center;
     background-size: cover;
     .admin-flag {
       font-size: px(14);

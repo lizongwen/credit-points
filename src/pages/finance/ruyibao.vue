@@ -83,7 +83,7 @@ export default {
 @import "../../style/variable";
 .ruyibao {
   height: 100%;
-  background: url("../../img/finance/ruyibao_bg.png") no-repeat bottom;
+  background: url("../../img/finance/ruyibao_bg.jpg") no-repeat bottom;
   background-size: cover;
   overflow: hidden;
   .diamond {

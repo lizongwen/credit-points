@@ -111,7 +111,7 @@ export default {
 @import "../../style/variable";
 .credit-card {
   height: 100%;
-  background: url("../../img/finance/xyksq.png") no-repeat bottom;
+  background: url("../../img/finance/xyksq.jpg") no-repeat bottom;
   background-size: cover;
   overflow: hidden;
   .credit-slogan {

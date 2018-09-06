@@ -1,7 +1,7 @@
 <template>
 	<div class="net-dot">
 		<div class="amap-wrapper">
-			<el-amap ref="map" class="amap-box" :vid="'amap-vue'" :amap-manager="amapManager" :zoom="zoom">
+			<el-amap ref="map" class="amap-box" :vid="'amap-vue'" :amap-manager="amapManager" :zoom="zoom" :center="center">
 				<!-- <el-amap-marker :icon="usermarker.mark_icon" :position="usermarker.position" vid="user" offset:[-17, -72],></el-amap-marker> -->
 				<el-amap-marker v-for="(marker,index) in markers" :icon="marker.mark_icon" :position="marker.position" :events="marker.events" :vid="index" :key="index" :offset="marker.offset"></el-amap-marker>
 				<el-amap-info-window isCustom="true" v-if="window" closeWhenClickMap="true" :position="window.position" :visible="window.visible" :content="window.content" :events="window.events" :offset="window.offset"></el-amap-info-window>

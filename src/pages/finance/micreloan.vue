@@ -100,7 +100,7 @@ export default {
 @import "../../style/variable";
 .micreloan {
   height: 100%;
-  background: url("../../img/finance/micre_loan.png") no-repeat bottom;
+  background: url("../../img/finance/micre_loan.jpg") no-repeat bottom;
   background-size: cover;
   overflow: hidden;
   .micreloan-slogan {
