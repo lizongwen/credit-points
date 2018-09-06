@@ -79,7 +79,7 @@ export default {
 @import "../../style/variable";
 .deposit-halved {
   height: 100%;
-  background: url("../../img/travel/banner3@3x.png") no-repeat bottom;
+  background: url("../../img/travel/banner3@3x.jpg") no-repeat bottom;
   background-size: cover;
   overflow: hidden;
   .tooltip-text {

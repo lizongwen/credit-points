@@ -11,54 +11,54 @@
 		</mt-navbar>
 		<mt-tab-container v-model="selected">
 			<mt-tab-container-item id="1" class="unfinish-wrap">
-				<div class="content-padded">
-					<div class="order-list">
-						<div class="order-item border-b-1px" v-for="(application,index) in applications" :key="index">
-							<div class="order-avatar">
-								<img src="../../img/travel/icon_yikai@2x.png" />
+				<!-- <div class="content-padded"> -->
+				<div class="order-list">
+					<div class="order-item border-b-1px" v-for="(application,index) in applications" :key="index">
+						<div class="order-avatar">
+							<img src="../../img/travel/icon_yikai@2x.png" />
+						</div>
+						<div class="order-detail">
+							<div class="order-detail-title">
+								<div class="name">易开出行</div>
+								<div class="remark">({{application.incentivenames}})</div>
 							</div>
-							<div class="order-detail">
-								<div class="order-detail-title">
-									<div class="name">{{application.username}}</div>
-									<div class="remark">({{application.incentivenames}})</div>
-								</div>
-								<div class="order-detail-item">
-									<div>申请时间：</div>
-									<div>{{application.applytime}}</div>
-								</div>
-								<div class="order-detail-item">
-									<div>申请状态：</div>
-									<div>{{dealStatus(application.operatestatus)}}</div>
-								</div>
+							<div class="order-detail-item">
+								<div>申请时间：</div>
+								<div>{{application.applytime}}</div>
+							</div>
+							<div class="order-detail-item">
+								<div>申请状态：</div>
+								<div>{{dealStatus(application.operatestatus)}}</div>
 							</div>
 						</div>
 					</div>
 				</div>
+				<!-- </div> -->
 			</mt-tab-container-item>
 			<mt-tab-container-item id="2" class="finish-wrap">
-				<div class="content-padded">
-					<div class="order-list">
-						<div class="order-item border-b-1px" v-for="(application,index) in finished" :key="index">
-							<div class="order-avatar">
-								<img src="../../img/travel/icon_yikai@2x.png" />
+				<!-- <div class="content-padded"> -->
+				<div class="order-list">
+					<div class="order-item border-b-1px" v-for="(application,index) in finished" :key="index">
+						<div class="order-avatar">
+							<img src="../../img/travel/icon_yikai@2x.png" />
+						</div>
+						<div class="order-detail">
+							<div class="order-detail-title">
+								<div class="name">{{application.username}}</div>
+								<div class="remark">({{application.incentivenames}})</div>
 							</div>
-							<div class="order-detail">
-								<div class="order-detail-title">
-									<div class="name">{{application.username}}</div>
-									<div class="remark">({{application.incentivenames}})</div>
-								</div>
-								<div class="order-detail-item">
-									<div>申请时间：</div>
-									<div>{{application.applytime}}</div>
-								</div>
-								<div class="order-detail-item">
-									<div>申请状态：</div>
-									<div>{{dealStatus(application.operatestatus)}}</div>
-								</div>
+							<div class="order-detail-item">
+								<div>申请时间：</div>
+								<div>{{application.applytime}}</div>
+							</div>
+							<div class="order-detail-item">
+								<div>申请状态：</div>
+								<div>{{dealStatus(application.operatestatus)}}</div>
 							</div>
 						</div>
 					</div>
 				</div>
+				<!-- </div> -->
 			</mt-tab-container-item>
 		</mt-tab-container>
 	</div>
@@ -77,11 +77,11 @@ export default {
         },
         {
           id: 1,
-          name: "审核失败"
+          name: "审核成功"
         },
         {
           id: 2,
-          name: "审核成"
+          name: "审核失败"
         }
       ],
       applications: [],
@@ -126,7 +126,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import "../../style/func";
 @import "../../style/mixin";
 @import "../../style/variable";
@@ -139,6 +139,9 @@ export default {
     position: relative;
     margin-bottom: -1px;
     border-bottom-color: #5da904;
+	.mint-tab-item-label{
+		color:#5da904;
+	}
   }
   .order-list {
     overflow: auto;
@@ -173,10 +176,8 @@ export default {
             margin-right: px(10);
           }
           .remark {
-            width: px(75);
             font-size: px(16);
             color: #4a4a4a;
-            text-align: justify;
             overflow: hidden;
             margin-right: px(10);
           }

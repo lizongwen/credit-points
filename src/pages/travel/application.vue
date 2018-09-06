@@ -60,9 +60,7 @@ export default {
     },
     methods: {
         goBack() {
-            this.$router.push({
-                name: 'travel'
-            });
+            this.$router.go(-2);
         }
     },
     mounted() {

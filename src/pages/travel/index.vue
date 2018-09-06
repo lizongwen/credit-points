@@ -24,7 +24,7 @@
           <div class="card-head-small-title">{{car.description}}</div>
         </div>
         <div class="card-body">
-          <img src="../../img/travel/banner2@2x.png">
+          <img src="../../img/travel/banner2@2x.jpg">
         </div>
         <div class="card-foot">
           <div class="travel-wrap">
@@ -58,7 +58,7 @@ export default {
   data() {
     return {
       total: 0,
-      adminFlag: true,
+      adminFlag: false,
       score: 0,
 	  cars: [],
     }
@@ -77,12 +77,12 @@ export default {
     // 检查是否是管理员
     checkIsAdmin: async function() {
       let params = {
-        idcard: this.$route.query.idcard
+		 idcard: this.$store.state.travel.useridcard
       };
       const res = await this.$http.getUser(
-        "/h5web/credit/common/admin/checkIsAdmin",
+        "/qtweb/credit/common/admin/checkIsAdmin",
         params
-      );
+	  );
       if (res.resultCode == "0000") {
         this.adminFlag = true;
       }
@@ -90,7 +90,7 @@ export default {
     //获取用户信息
     getUserInfo: async function() {
       let params = {
-        idcard: this.$route.query.idcard
+        idcard: this.$store.state.travel.useridcard
       };
       const res = await this.$http.getUser(
         "/h5web/credit/common/user/getUserInfoByIdcard",
@@ -129,7 +129,7 @@ export default {
           userId: this.$store.state.travel.userId
         }
       };
-      const res = await this.$http.post("/apicenter/rest/post", params);
+	  const res = await this.$http.post("/apicenter/rest/post", params);
       if (res.resultCode == "0000") {
         this.total = res.result;
       } else {
@@ -169,7 +169,7 @@ export default {
     text-shadow: 0 2px 3px rgba(0, 0, 0, 0.6);
     padding-top: px(42);
     justify-content: center;
-    background: url("../../img/travel/banner1@2x.png") no-repeat center;
+    background: url("../../img/travel/banner1@2x.jpg") no-repeat center;
     background-size: cover;
     color: $text-white;
   }
@@ -212,10 +212,9 @@ export default {
       margin-bottom: px(3);
       display: flex;
       .item {
-        flex: 1;
-        margin-left: px(30);
+		  padding:0 px(20);
+		  text-align: center;
         >img {
-          margin-left: px(10);
           width: px(31);
           height: px(35);
         }
