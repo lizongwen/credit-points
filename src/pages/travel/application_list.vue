@@ -168,11 +168,8 @@ export default {
           display: flex;
           height: px(22);
           .name {
-            width: px(64);
             font-size: px(16);
             font-weight: bold;
-            text-align: justify;
-            overflow: hidden;
             margin-right: px(10);
           }
           .remark {

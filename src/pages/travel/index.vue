@@ -80,7 +80,7 @@ export default {
 		 idcard: this.$store.state.travel.useridcard
       };
       const res = await this.$http.getUser(
-        "/qtweb/credit/common/admin/checkIsAdmin",
+        "/h5web/credit/common/admin/checkIsAdmin",
         params
 	  );
       if (res.resultCode == "0000") {
