@@ -6,7 +6,7 @@
 		</mt-navbar>
 		<mt-tab-container v-model="selected">
 			<mt-tab-container-item id="1" class="unfinish-wrap">
-				<mt-search class="search-wrap" v-model="searchValue1" cancel-text="取消" placeholder="输入姓名、电话号码或身份证号" :show="true" :result="unfinishs" @keyup.enter.native="unfinishSearch">
+				<mt-search class="search-wrap" v-model="searchValue1" cancel-text="取消" placeholder="输入姓名、身份证号" :show="true" :result="unfinishs" @keyup.enter.native="unfinishSearch">
 					<div class="content-padded">
 						<mt-loadmore :top-method="updateOrder1" :auto-fill="false" :bottom-method="loadBottom1" :bottom-all-loaded="allLoaded1" bottomPullText="上拉加载" bottomDropText="释放加载更多" ref="loadmore1">
 							<div class="order-list" :style="{'min-height':ordersHeight}">
@@ -44,7 +44,7 @@
 				</mt-search>
 			</mt-tab-container-item>
 			<mt-tab-container-item id="2" class="finish-wrap">
-				<mt-search class="search-wrap" v-model="searchValue2" cancel-text="取消" placeholder="输入姓名、电话号码或身份证号" :show="true" :result="finishs" @keyup.enter.native="finishSearch">
+				<mt-search class="search-wrap" v-model="searchValue2" cancel-text="取消" placeholder="输入姓名、身份证号" :show="true" :result="finishs" @keyup.enter.native="finishSearch">
 					<div class="content-padded">
 						<mt-loadmore :top-method="updateOrder2" :auto-fill="false" :bottom-method="loadBottom2" :bottom-all-loaded="allLoaded2" bottomPullText="上拉加载" bottomDropText="释放加载更多" ref="loadmore2">
 							<div class="order-list" :style="{'min-height':ordersHeight}">

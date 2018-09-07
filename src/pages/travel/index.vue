@@ -30,7 +30,7 @@
           <div class="travel-wrap">
             <div class="item">
               <img src="../../img/travel/icon_yajinjianban@2x.png" @click="goApplication(index)" v-if="$store.state.travel.score >= car.incentives[0].incentivescore">
-              <img src="../../img/travel/icon_yajinjianban@2x.png" v-else>
+              <img src="../../img/travel/icon_yajinjianban_grey@2x.png" v-else>
               <p class="name">押金减半</p>
               <p class="score">乐惠分900</p>
             </div>
