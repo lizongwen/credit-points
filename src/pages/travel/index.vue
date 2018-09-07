@@ -80,7 +80,7 @@ export default {
 		 idcard: this.$store.state.travel.useridcard
       };
       const res = await this.$http.getUser(
-        "/h5web/credit/common/admin/checkIsAdmin",
+        "/credit/common/admin/checkIsAdmin",
         params
 	  );
       if (res.resultCode == "0000") {
@@ -93,7 +93,7 @@ export default {
         idcard: this.$store.state.travel.useridcard
       };
       const res = await this.$http.getUser(
-        "/h5web/credit/common/user/getUserInfoByIdcard",
+        "/credit/common/user/getUserInfoByIdcard",
         params
       );
       if (res) {

@@ -11,6 +11,14 @@ const baseRouter = [
 		name: '',
 		// redirect: '/um'
 	},
+	{
+		path: '/download',
+		name: 'download',
+		meta:{
+			title:'城市令下载'
+		},
+		component: () => import('@/components/download.vue')
+	},
 ]
 const RouterConfig = {
 	routes: [...baseRouter, ...umbrella, ...finance, ...travel]
@@ -21,6 +29,11 @@ router.beforeEach((to, from, next) => {
 	/* 路由发生变化修改页面title */
 	if (to.meta.title) {
 		document.title = to.meta.title||'信用服务'
+	}
+	if(to.path=='/umbrella/home'){
+		if(!to.code){
+			next('/download')
+		}
 	}
 	next()
 })
