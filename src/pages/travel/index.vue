@@ -1,54 +1,54 @@
 <template>
-  <div class="index">
-    <!--header-->
-    <div class="banner">安全·便捷</div>
-    <div class="index-box">
-      <div class="index-box-item">
-        <img src="../../img/travel/icon_fenshizulin@3x.png">
-        <p>分时租赁</p>
-      </div>
-      <div class="index-box-item">
-        <img src="../../img/travel/icon_wangyueche@3x.png">
-        <p>网约车</p>
-      </div>
-      <div class="index-box-item">
-        <img src="../../img/travel/icon_danche@3x.png">
-        <p>共享单车</p>
-      </div>
-    </div>
-    <!--contain-->
-    <div class="content-padded travel-list">
-      <div class="card" v-for="(car,index) in cars" :key="index">
-        <div class="card-head">
-          <div class="card-head-title card-head-title-bd-green">{{car.travelname}}</div>
-          <div class="card-head-small-title">{{car.description}}</div>
-        </div>
-        <div class="card-body">
-          <img src="../../img/travel/banner2@2x.jpg">
-        </div>
-        <div class="card-foot">
-          <div class="travel-wrap">
-            <div class="item">
-              <img src="../../img/travel/icon_yajinjianban@2x.png" @click="goApplication(index)" v-if="$store.state.travel.score >= car.incentives[0].incentivescore">
-              <img src="../../img/travel/icon_yajinjianban_grey@2x.png" v-else>
-              <p class="name">押金减半</p>
-              <p class="score">乐惠分900</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+	<div class="index">
+		<!--header-->
+		<div class="banner">安全·便捷</div>
+		<div class="index-box">
+			<div class="index-box-item">
+				<img src="../../img/travel/icon_fenshizulin@3x.png">
+				<p>分时租赁</p>
+			</div>
+			<div class="index-box-item">
+				<img src="../../img/travel/icon_wangyueche@3x.png">
+				<p>网约车</p>
+			</div>
+			<div class="index-box-item">
+				<img src="../../img/travel/icon_danche@3x.png">
+				<p>共享单车</p>
+			</div>
+		</div>
+		<!--contain-->
+		<div class="content-padded travel-list">
+			<div class="card" v-for="(car,index) in cars" :key="index">
+				<div class="card-head">
+					<div class="card-head-title card-head-title-bd-green">{{car.travelname}}</div>
+					<div class="card-head-small-title">{{car.description}}</div>
+				</div>
+				<div class="card-body">
+					<img src="../../img/travel/banner2@2x.jpg">
+				</div>
+				<div class="card-foot">
+					<div class="travel-wrap">
+						<div class="item">
+							<img src="../../img/travel/icon_yajinjianban@2x.png" @click="goApplication(index)" v-if="$store.state.travel.score >= car.incentives[0].incentivescore">
+							<img src="../../img/travel/icon_yajinjianban_grey@2x.png" v-else>
+							<p class="name">押金减半</p>
+							<p class="score">乐惠分900</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 
-    <div class="tips" id="running" @click="toApplicationList">
-      <div class="tips-number">+{{total}}</div>
-      <div class="tips-desc">进行中</div>
-    </div>
+		<div class="tips" id="running" @click="toApplicationList">
+			<div class="tips-number">+{{total}}</div>
+			<div class="tips-desc">进行中</div>
+		</div>
 
-    <div class="score-tip" v-if="adminFlag" @click="goAdminPage">
-      <img src="../../img/travel/icon_guanliyuan.png">
-      <span class="score">管理员</span>
-    </div>
-  </div>
+		<div class="score-tip" v-if="adminFlag" @click="goAdminPage">
+			<img src="../../img/travel/icon_guanliyuan.png">
+			<span class="score">管理员</span>
+		</div>
+	</div>
 </template>
 
 <script>
@@ -60,10 +60,14 @@ export default {
       total: 0,
       adminFlag: false,
       score: 0,
-	  cars: [],
-    }
+      cars: []
+    };
   },
   mounted() {
+    if (window.getShareData) {
+      window.getShareData.ClearHistory("true");
+      window.getShareData.showTitleBar("true");
+    }
     utils.dragBall("running");
     this.$store.commit("travel/setUserId", this.$route.query.userId);
     this.$store.commit("travel/setScore", this.$route.query.score);
@@ -77,12 +81,12 @@ export default {
     // 检查是否是管理员
     checkIsAdmin: async function() {
       let params = {
-		 idcard: this.$store.state.travel.useridcard
+        idcard: this.$store.state.travel.useridcard
       };
       const res = await this.$http.getUser(
         "/credit/common/admin/checkIsAdmin",
         params
-	  );
+      );
       if (res.resultCode == "0000") {
         this.adminFlag = true;
       }
@@ -103,7 +107,7 @@ export default {
     },
     toApplicationList() {
       this.$router.push({
-        name: 'application_list'
+        name: "application_list"
       });
     },
     goApplication(index) {
@@ -113,12 +117,12 @@ export default {
       this.$store.commit("travel/setUsercreditscore", data.incentivescore);
       this.$store.commit("travel/setVenueId", this.cars[index].id);
       this.$router.push({
-        name: 'deposit_halved'
+        name: "deposit_halved"
       });
     },
     goAdminPage() {
       this.$router.push({
-        name: 'approval'
+        name: "approval"
       });
     },
     //获取进行中的申请
@@ -129,7 +133,7 @@ export default {
           userId: this.$store.state.travel.userId
         }
       };
-	  const res = await this.$http.post("/apicenter/rest/post", params);
+      const res = await this.$http.post("/apicenter/rest/post", params);
       if (res.resultCode == "0000") {
         this.total = res.result;
       } else {
@@ -152,7 +156,7 @@ export default {
       }
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -198,7 +202,7 @@ export default {
           background: $bd-grey;
         }
       }
-      >img {
+      > img {
         width: px(30);
         margin-top: px(8);
         margin-bottom: px(5);
@@ -212,9 +216,9 @@ export default {
       margin-bottom: px(3);
       display: flex;
       .item {
-		  padding:0 px(20);
-		  text-align: center;
-        >img {
+        padding: 0 px(20);
+        text-align: center;
+        > img {
           width: px(31);
           height: px(35);
         }
@@ -222,7 +226,7 @@ export default {
           margin-top: px(6);
           font-size: px(14);
           line-height: px(14);
-          color: #4A4A4A;
+          color: #4a4a4a;
         }
         .score {
           display: inline-block;
@@ -231,7 +235,7 @@ export default {
           font-size: px(9);
           transform: scale(0.75);
           background: #ffe4e4;
-          color: #FF7070;
+          color: #ff7070;
         }
       }
     }
@@ -264,13 +268,11 @@ export default {
     padding: px(4) px(0) px(4) px(10);
     border-radius: px(13) 0 0 px(13);
     font-size: px(12);
-    >img {
+    > img {
       width: px(20);
       margin: 0 auto;
     }
-    background-image: linear-gradient(-121deg,
-    #FFF551 3%,
-    #FDE728 100%);
+    background-image: linear-gradient(-121deg, #fff551 3%, #fde728 100%);
     .score {
       font-size: px(12);
       vertical-align: px(-1);

@@ -41,6 +41,10 @@ export default {
     };
   },
   mounted() {
+    if (window.getShareData) {
+      window.getShareData.ClearHistory("true");
+      window.getShareData.showTitleBar("true");
+    }
     sessionStorage.removeItem("umbrellaCode");
     this.ordersHeight = (window.innerHeight - 53) / 20 + "rem";
     //获取未完成订单
