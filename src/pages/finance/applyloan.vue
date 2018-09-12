@@ -35,14 +35,14 @@
 					</div>
 				</div>
 			</form>
-			<div class="checkbox-wrap">
+			<!-- <div class="checkbox-wrap">
 				<input class="checkbox" type="checkbox" v-model="checked">
 				<span class="chenckbox-text" @click="goProtocol">我已阅读并同意
 					<span class="protocol-name">《信用金融使用条款》</span>
 				</span>
-			</div>
+			</div> -->
 			<div class="content-padded">
-				<button class="btn btn-golden btn-block btn-large" :class="{'btn-disabled':!checked}" @click="submit" :disabled="!checked">确认申请</button>
+				<button class="btn btn-golden btn-block btn-large" @click="submit">确认申请</button>
 			</div>
 		</div>
 		<div v-show="!ok" class="result">
@@ -62,7 +62,6 @@ export default {
   data() {
     return {
       ok: true,
-      checked: false,
       form: {
         userid: this.$store.state.finance.userId,
         user: this.$store.state.finance.userName,
@@ -83,9 +82,6 @@ export default {
   },
   methods: {
     submit: async function() {
-      if (!this.checked) {
-        return;
-      }
       let params = {
         method: "XYJR00001",
         params: {

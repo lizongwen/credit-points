@@ -63,11 +63,52 @@
 			<br/> 2、在协议期内若发生纠纷，由协议双方按照法律规定解决，城市令平台不承担任何法律责任。
 			<br/> 3、在协议期内，通过使用信用金融而获得的相关服务，均由信用金融的关联公司或合作伙伴提供，信用金融对服务内容的合法性概不负责，亦不承担任何法律责任。
 		</div>
+		<div class="btn-box">
+			<button class="btn btn-primary btn-block" @click="agree">同意</button>
+			<div class="gutter"></div>
+			<button class="btn btn-default btn-block" @click="unagree">不同意</button>
+		</div>
 	</div>
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {};
+  },
+  mounted() {},
+  methods: {
+    agree: async function() {
+      let params = {
+        method: "XYJR00012",
+        params: {
+			userid:this.$route.query.userId,
+			useridcard:this.$route.query.idcard
+		}
+      };
+      const res = await this.$http.post("/apicenter/rest/post", params);
+      if (res.resultCode == "0000") {
+		this.$router.push({
+			path:'/finance',
+			query:{
+				userId:this.$route.query.userId,
+				score:this.$route.query.score,
+				idcard:this.$route.query.idcard
+			}
+		})
+      } else {
+        Toast({
+          message: res.resultMsg,
+          duration: 2000,
+          position: "bottom"
+        });
+      }
+    },
+    unagree() {
+		this.$router.go(-1);
+	}
+  }
+};
 </script>
 
 <style lang="scss" scoped>
@@ -92,6 +133,15 @@ export default {};
     line-height: 1.8;
     font-size: px(12);
     color: $text-grey;
+  }
+  .btn-box {
+    margin-top: px(10);
+	margin-bottom: px(10);
+    display: flex;
+    justify-content: space-around;
+    .gutter {
+      width: px(15);
+    }
   }
 }
 </style>
