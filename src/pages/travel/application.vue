@@ -1,8 +1,4 @@
-/**
-* author: 王蒙Sanm
-* description: 申请狀態
-**/
-<<template>
+<template>
   <div class="application-status">
       <div class="submit-application" v-if="status === 1">
         <div class="application-img">

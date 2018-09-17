@@ -11,7 +11,7 @@
 					<order-list :hasbtn="true" :orders="finish"></order-list>
 				</mt-tab-container-item>
 				<mt-tab-container-item id="2" class="unfinish-wrap" :style="{height:ordersHeight}">
-					<mt-loadmore :top-method="updateOrder" :bottom-method="loadBottom" bottomPullText="上拉加载" bottomDropText="释放加载更多" :bottom-all-loaded="allLoaded" ref="loadmore">
+					<mt-loadmore :top-method="updateOrder" :bottom-method="loadBottom" bottomPullText="上拉加载" bottomDropText="释放加载更多" :bottom-all-loaded="allLoaded" ref="loadmore" :auto-fill="false">
 						<order-list :hasbtn="true" :orders="unfinish" :style="{'min-height':ordersHeight}"></order-list>
 					</mt-loadmore>
 				</mt-tab-container-item>

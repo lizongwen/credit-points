@@ -8,15 +8,21 @@
 		</div>
 		<div class="index-box">
 			<div class="index-box-item">
-				<img src="../../img/finance/pig@3x.png">
+				<div class="index-box_item_imgwrap">
+					<img src="../../img/finance/pig@3x.png">
+				</div>
 				<p>信理财</p>
 			</div>
 			<div class="index-box-item">
-				<img src="../../img/finance/card@3x.png">
+				<div class="index-box_item_imgwrap">
+					<img src="../../img/finance/card@3x.png">
+				</div>
 				<p>信易申</p>
 			</div>
 			<div class="index-box-item">
-				<img src="../../img/finance/money@3x.png">
+				<div class="index-box_item_imgwrap">
+					<img src="../../img/finance/money@3x.png">
+				</div>
 				<p>信易贷</p>
 			</div>
 		</div>
@@ -214,10 +220,16 @@ export default {
           background: $bd-grey;
         }
       }
-      > img {
-        width: px(30);
+      .index-box_item_imgwrap {
+        display: flex;
+        height: px(27);
         margin-top: px(8);
         margin-bottom: px(5);
+        align-items: center;
+        justify-content: center;
+        > img {
+          height: 100%;
+        }
       }
     }
   }

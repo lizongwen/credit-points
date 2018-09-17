@@ -35,7 +35,7 @@
 									<div class="order-btn-box">
 										<button class="btn btn-default btn-block" @click="showPop(order.id)">拒绝</button>
 										<div class="gutter"></div>
-										<button class="btn btn-green btn-block" @click="pass(order.id)">初次通过</button>
+										<button class="btn btn-green btn-block" :class="{'btn-disabled':isDisabled}" :disabled="isDisabled" @click="pass(order.id)">初次通过</button>
 									</div>
 								</div>
 							</div>
@@ -99,6 +99,7 @@ import { Toast } from "mint-ui";
 export default {
   data() {
     return {
+      isDisabled: false,
       ordersHeight: "",
       unfinishsPageNo: 1,
       finishsPageNo: 1,
@@ -255,6 +256,7 @@ export default {
     },
     //审批通过
     pass: async function(id) {
+      this.isDisabled = true;
       let params = {
         method: "XYX00005",
         params: {
@@ -262,8 +264,9 @@ export default {
           operateStatus: 1,
           operateReason: ""
         }
-      };
+	  };
       const res = await this.$http.post("/apicenter/rest/post", params);
+      this.isDisabled = false;
       if (res.resultCode == "0000") {
         this.unfinishsPageNo = 1;
         this.finishsPageNo = 1;
@@ -310,20 +313,20 @@ export default {
             margin-top: px(10);
             margin-bottom: px(5);
             width: px(32);
-		  }
-		  .tip{
-			  margin-top: px(5);
-			  display: inline-block;
-			  padding:px(1) px(9);
-			  font-size: px(12);
-			  border-radius: px(4);
-		  }
-		  .pass{
-			  background: rgba(164,231,86,0.2)
-		  }
-		  .fail{
-			   background: rgba(255,112,112,0.2)
-		  }
+          }
+          .tip {
+            margin-top: px(5);
+            display: inline-block;
+            padding: px(1) px(9);
+            font-size: px(12);
+            border-radius: px(4);
+          }
+          .pass {
+            background: rgba(164, 231, 86, 0.2);
+          }
+          .fail {
+            background: rgba(255, 112, 112, 0.2);
+          }
         }
         .order-detail {
           flex: 1;

@@ -1,8 +1,3 @@
-/**
-* author: 王蒙Sanm
-* createTime: 2018/8/30
-* description: 押金减半
-**/
 <template>
   <div class="deposit-halved">
     <div class="tooltip-text">

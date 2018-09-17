@@ -4,19 +4,24 @@
 		<div class="banner">安全·便捷</div>
 		<div class="index-box">
 			<div class="index-box-item">
+				<div class="index-box_item_imgwrap">
 				<img src="../../img/travel/icon_fenshizulin@3x.png">
+				</div>
 				<p>分时租赁</p>
 			</div>
 			<div class="index-box-item">
+				<div class="index-box_item_imgwrap">
 				<img src="../../img/travel/icon_wangyueche@3x.png">
+				</div>
 				<p>网约车</p>
 			</div>
 			<div class="index-box-item">
+				<div class="index-box_item_imgwrap">
 				<img src="../../img/travel/icon_danche@3x.png">
+				</div>
 				<p>共享单车</p>
 			</div>
 		</div>
-		<!--contain-->
 		<div class="content-padded travel-list">
 			<div class="card" v-for="(car,index) in cars" :key="index">
 				<div class="card-head">
@@ -38,12 +43,10 @@
 				</div>
 			</div>
 		</div>
-
 		<div class="tips" id="running" @click="toApplicationList">
 			<div class="tips-number">+{{total}}</div>
 			<div class="tips-desc">进行中</div>
 		</div>
-
 		<div class="score-tip" v-if="adminFlag" @click="goAdminPage">
 			<img src="../../img/travel/icon_guanliyuan.png">
 			<span class="score">管理员</span>
@@ -201,11 +204,17 @@ export default {
           height: px(54);
           background: $bd-grey;
         }
-      }
-      > img {
-        width: px(30);
+	  }
+	  .index-box_item_imgwrap {
+        display: flex;
+        height: px(27);
         margin-top: px(8);
         margin-bottom: px(5);
+        align-items: center;
+        justify-content: center;
+        > img {
+          height: 100%;
+        }
       }
     }
   }
