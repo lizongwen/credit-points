@@ -99,7 +99,6 @@ export default {
       };
       const res = await this.$http.getUser(
         "/credit/common/user/getUserInfoByIdcard",
-        // "/qtweb/credit/common/user/getUserInfoByIdcard",
         params
       );
       if (res) {
