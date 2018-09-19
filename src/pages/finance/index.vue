@@ -63,7 +63,6 @@ export default {
       adminFlag: false,
       total: 0,
       banks: [],
-      incentives: []
     };
   },
   mounted() {

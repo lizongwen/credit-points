@@ -23,27 +23,27 @@
 			</div>
 		</div>
 		<div class="content-padded talent-list">
-			<div class="card">
+			<div class="card" v-for="(netDot,index) in netDots" :key="index">
 				<div class="card-head">
-					<div class="card-head-title card-head-title-bd-blue">市人力资源和社会保障局</div>
+					<div class="card-head-title card-head-title-bd-blue">{{netDot.travelname}}</div>
 				</div>
 				<div class="card-body">
 					<img src="../../img/talent/ms_talent@2x.jpg">
 				</div>
 				<div class="card-foot">
 					<div class="talent-wrap">
-						<!-- <div class="item" v-for="(incentive,index) in bank.incentives" :key="index">
-							<img v-if="$store.state.talent.score>=incentive.incentivescore" :src="require(`../../img/talent/${bank.sitecode}-${index}.png`)" @click="go(incentive,bank.id)">
-							<img v-else :src="require(`../../img/talent/${bank.sitecode}-${index}_grey.png`)">
+						<div class="item" v-for="(incentive,index) in netDot.incentives" :key="index">
+							<img v-if="$store.state.talent.score>=incentive.incentivescore" src="../../img/talent/ydy@2x.png" @click="isComment(incentive,netDot.id)">
+							<img v-else src="../../img/talent/ydy@2x.png" :style="{'-webkit-filter':'saturate(0%) brightness(125%)'}">
 							<p class="name">{{incentive.incentivename}}</p>
 							<p class="score">乐惠分{{incentive.incentivescore}}</p>
-						</div> -->
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="tips" id="running">
-			<div class="tips-number">+{{55}}</div>
+		<div class="tips" id="running" @click="goApplyList">
+			<div class="tips-number">+{{total}}</div>
 			<div class="tips-desc">进行中</div>
 		</div>
 		<mt-popup class="popup" v-model="popupVisible">
@@ -69,13 +69,127 @@ import { Toast } from "mint-ui";
 export default {
   data() {
     return {
-      popupVisible: false
+      total: 0,
+      popupVisible: false,
+      netDots: [],
+      applyid: "",
+      recordCode: "",
+      applytime: "",
+      incentivename: ""
     };
   },
   mounted() {
+    if (window.getShareData) {
+      window.getShareData.ClearHistory("true");
+      window.getShareData.showTitleBar("true");
+    }
     utils.dragBall("running");
+    this.$store.commit("talent/setUserId", this.$route.query.userId);
+    this.$store.commit("talent/setScore", this.$route.query.score);
+    this.$store.commit("talent/setIdcard", this.$route.query.idcard);
+    this.getUserInfo();
+    this.getOrderTotal();
+    this.getNetDot();
   },
   methods: {
+    //获取用户信息
+    getUserInfo: async function() {
+      let params = {
+        idcard: this.$route.query.idcard
+      };
+      const res = await this.$http.getUser(
+        "/credit/common/user/getUserInfoByIdcard",
+        params
+      );
+      if (res) {
+        this.$store.commit("talent/setUserName", res.username);
+        this.$store.commit("talent/setUserPhone", res.userphone);
+      }
+    },
+    //获取进行中的申请
+    getOrderTotal: async function() {
+      let params = {
+        method: "XYRC00001",
+        params: {
+          userId: this.$store.state.talent.userId
+        }
+      };
+      const res = await this.$http.post("/apicenter/rest/post", params);
+      if (res.resultCode == "0000") {
+        this.total = res.result;
+      } else {
+        Toast({
+          message: res.resultMsg,
+          duration: 2000,
+          position: "bottom"
+        });
+      }
+    },
+    //判断用户是否评价
+    isComment: async function(obj, id) {
+      let params = {
+        method: "XYRC00006",
+        params: {
+          userId: this.$store.state.talent.userId,
+          incentiveId: obj.id
+        }
+      };
+      const res = await this.$http.post("/apicenter/rest/post", params);
+      if (res.resultCode == "0000") {
+        if (res.result) {
+          this.popupVisible = true;
+          this.applyid = res.result.id;
+          this.recordCode = res.result.recordcode;
+          this.applytime = res.result.applytime;
+          this.incentivename = res.result.incentivename;
+        } else {
+          this.go(obj, id);
+        }
+      } else {
+        Toast({
+          message: res.resultMsg,
+          duration: 2000,
+          position: "bottom"
+        });
+      }
+    },
+
+    //获取网点
+    getNetDot: async function() {
+      let params = {
+        method: "XYRC00003",
+        params: {}
+      };
+      const res = await this.$http.post("/apicenter/rest/post", params);
+      if (res.resultCode == "0000") {
+        if (res.result.length) {
+          this.netDots = res.result;
+        }
+      } else {
+        Toast({
+          message: res.resultMsg,
+          duration: 2000,
+          position: "bottom"
+        });
+      }
+    },
+    //跳转一对一申请页
+    go(obj, id) {
+      this.$router.push({
+        path: "/talent/apply",
+        query: {
+          incentiveid: obj.id,
+          incentivename: obj.incentivename,
+          venueid: id
+        }
+      });
+    },
+    //跳转进行中列表
+    goApplyList() {
+      this.$router.push({
+        path: "/talent/list"
+      });
+    },
     //取消弹出层
     cancel() {
       this.popupVisible = false;
@@ -83,6 +197,15 @@ export default {
     //确认跳转评价页
     esure() {
       this.popupVisible = false;
+      this.$router.push({
+        path: "/talent/comment",
+        query: {
+          applyId: this.applyid,
+          recordCode: this.recordCode,
+          applytime: this.applytime,
+          incentivename: this.incentivename
+        }
+      });
     }
   }
 };
@@ -145,7 +268,7 @@ export default {
       margin-bottom: px(3);
       display: flex;
       .item {
-        flex: 1;
+        padding: 0 px(20);
         text-align: center;
         > img {
           width: px(33);

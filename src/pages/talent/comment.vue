@@ -7,17 +7,13 @@
 						<div class="title">
 							<span class="text">申请项目</span>
 						</div>
-						<div class="value">
-							一对一咨询服务
-						</div>
+						<div class="value">{{$route.query.incentivename}}</div>
 					</div>
 					<div class="form-item border-b-1px">
 						<div class="title">
 							<span class="text">申请时间</span>
 						</div>
-						<div class="value">
-							2018/03/23 10:30
-						</div>
+						<div class="value">{{$route.query.applytime}}</div>
 					</div>
 				</form>
 			</div>
@@ -28,7 +24,6 @@
 				</div>
 				<div class="note">
 					注意事项：<br/> 1.请认真填写对本次服务的评价。
-					<br/> 2.提交评价的用户可参与评价抽奖活动。
 					<br/>
 				</div>
 				<button class="btn btn-primary btn-large btn-block" @click="submit">确认提交</button>
@@ -75,11 +70,11 @@ export default {
         return;
       }
       let params = {
-        method: "XYQ00004",
+        method: "XYRC00005",
         params: {
-          applyid: this.applyid,
-          recordcode: this.recordcode,
-          issatisfaction: this.value,
+          applyId: this.applyid,
+          recordCode: this.recordcode,
+          isSatisfaction: this.value,
           content: this.commentText
         }
       };
@@ -98,7 +93,7 @@ export default {
     checkInput() {
       if (!this.value || !this.commentText) {
         Toast({
-          message: "评价不能为空",
+          message: "评价内容不能为空",
           duration: 2000,
           position: "bottom"
         });
