@@ -20,11 +20,11 @@
 			<div class="result-data border-b-1px">
 				<div class="item">
 					<div class="title">姓名：</div>
-					<div class="value">马冬梅</div>
+					<div class="value">{{$store.state.talent.userName}}</div>
 				</div>
 				<div class="item">
 					<div class="title">身份证号：</div>
-					<div class="value">12345679088796786734</div>
+					<div class="value">{{$store.state.talent.idcard}}</div>
 				</div>
 			</div>
 			<div class="result-desc">请凭此页面联系大厅引导员为您提供服务<br/> 并在接受完服务后，及时进行评价。

@@ -1,31 +1,38 @@
 <template>
 	<div class="list">
-		<div class="banner"></div>
+		<div class="banner">
+			培养信用管理人才
+		</div>
 		<div class="list-content" :style="{height:ordersHeight}">
-			<mt-loadmore :auto-fill="false" :top-method="updateOrder" :bottom-method="loadBottom" bottomPullText="上拉加载" bottomDropText="释放加载更多" :bottom-all-loaded="allLoaded" ref="loadmore">
-				<div class="order-list" :style="{'min-height':ordersHeight}">
-					<div class="order-item border-b-1px" v-for="(list,index) in lists" :key="index">
-						<div class="order-detail">
-							<div class="dept">{{list.travelName}}</div>
-							<div>
-								<span>服务项目：</span>
-								<span>{{list.incentivename}}</span>
+			<div class="empty" v-show="!lists.length">
+				暂无数据
+			</div>
+			<div v-show="lists.length">
+				<mt-loadmore :auto-fill="false" :top-method="updateOrder" :bottom-method="loadBottom" bottomPullText="上拉加载" bottomDropText="释放加载更多" :bottom-all-loaded="allLoaded" ref="loadmore">
+					<div class="order-list" :style="{'min-height':ordersHeight}">
+						<div class="order-item border-b-1px" v-for="(list,index) in lists" :key="index">
+							<div class="order-detail">
+								<div class="dept">{{list.travelName}}</div>
+								<div>
+									<span>服务项目：</span>
+									<span>{{list.incentivename}}</span>
+								</div>
+								<div>
+									<span>申请状态：</span>
+									<span>申请成功</span>
+								</div>
+								<div>
+									<span>申请时间：</span>
+									<span>{{list.applytime}}</span>
+								</div>
 							</div>
-							<div>
-								<span>申请状态：</span>
-								<span>申请成功</span>
+							<div class="order-btn-wrap" v-if="list.operatestatus==1">
+								<button class="btn btn-default-primary btn-min" @click="comment(list.id,list.recordcode,list.applytime,list.incentivename)">评价</button>
 							</div>
-							<div>
-								<span>申请时间：</span>
-								<span>{{list.applytime}}</span>
-							</div>
-						</div>
-						<div class="order-btn-wrap" v-if="list.operatestatus==1">
-							<button class="btn btn-default-primary btn-min" @click="comment(list.id,list.recordcode,list.applytime,list.incentivename)">评价</button>
 						</div>
 					</div>
-				</div>
-			</mt-loadmore>
+				</mt-loadmore>
+			</div>
 		</div>
 	</div>
 </template>
@@ -59,7 +66,10 @@ export default {
       const res = await this.$http.post("/apicenter/rest/post", params);
       if (res.resultCode == "0000") {
         if (res.result.length) {
-          this.lists = this.lists.concat(res.result);
+          if (res.result.length < 10) {
+            this.allLoaded = true;
+          }
+		  this.lists = this.lists.concat(res.result);
           ++this.pageNo;
         }
       } else {
@@ -71,7 +81,7 @@ export default {
       }
     },
     //评价
-    comment(applyid, recordCode,applytime,incentivename) {
+    comment(applyid, recordCode, applytime, incentivename) {
       this.$router.push({
         path: "/talent/comment",
         query: {
@@ -89,7 +99,7 @@ export default {
       this.$refs.loadmore.onTopLoaded();
     },
     loadBottom() {
-      this.getOrderList(this.pageNo, 3);
+      this.getList(this.pageNo, 3);
       this.$refs.loadmore.onBottomLoaded();
     }
   }
@@ -115,6 +125,11 @@ export default {
   }
   .list-content {
     overflow: scroll;
+    .empty {
+      margin-top: px(50);
+      text-align: center;
+      font-size: px(16);
+    }
     .order-list {
       overflow: auto;
       .order-item {

@@ -1,7 +1,6 @@
 <template>
 	<div class="index">
-		<div class="banner">
-		</div>
+		<div class="banner">高效·便捷</div>
 		<div class="index-box">
 			<div class="index-box-item">
 				<div class="index-box_item_imgwrap">
@@ -219,10 +218,16 @@ export default {
   height: 100%;
   background: $bg-grey;
   .banner {
+    display: flex;
+    font-size: px(24);
+    text-shadow: 0 2px 3px rgba(0, 0, 0, 0.6);
     position: relative;
     height: px(160);
+    align-items: center;
+    justify-content: center;
     background: url("../../img/talent/banner@2x.jpg") no-repeat center;
     background-size: cover;
+    color: $text-white;
   }
   .index-box {
     position: relative;
