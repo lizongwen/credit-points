@@ -29,15 +29,15 @@
 					<div class="card-head-small-title">{{car.description}}</div>
 				</div>
 				<div class="card-body">
-					<img src="../../img/travel/banner2@2x.jpg">
+					<img :src="car.imagelink">
 				</div>
 				<div class="card-foot">
 					<div class="travel-wrap">
-						<div class="item">
-							<img src="../../img/travel/icon_yajinjianban@2x.png" @click="goApplication(index)" v-if="$store.state.travel.score >= car.incentives[0].incentivescore">
-							<img src="../../img/travel/icon_yajinjianban_grey@2x.png" v-else>
-							<p class="name">押金减半</p>
-							<p class="score">乐惠分900</p>
+						<div class="item" v-for="(incentive,index) in car.incentives" :key="index">
+							<img v-if="$store.state.travel.score>=incentive.incentivescore" :src="incentive.thumbnailsmailimg" @click="go(incentive,car.id)">
+							<img v-else :src="incentive.thumbnailsmailimg" :style="{'-webkit-filter':'saturate(0%) brightness(100%)'}">
+							<p class="name">{{incentive.incentivename}}</p>
+							<p class="score">乐惠分{{incentive.incentivescore}}</p>
 						</div>
 					</div>
 				</div>

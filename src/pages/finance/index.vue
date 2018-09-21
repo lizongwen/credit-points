@@ -33,13 +33,13 @@
 					<div class="card-head-small-title">{{bank.description}}</div>
 				</div>
 				<div class="card-body">
-					<img src="../../img/finance/ms_bank@2x.jpg">
+					<img :src="bank.imagelink">
 				</div>
 				<div class="card-foot">
 					<div class="finance-wrap">
 						<div class="item" v-for="(incentive,index) in bank.incentives" :key="index">
-							<img v-if="$store.state.finance.score>=incentive.incentivescore" :src="require(`../../img/finance/${bank.sitecode}-${index}.png`)" @click="go(incentive,bank.id)">
-							<img v-else :src="require(`../../img/finance/${bank.sitecode}-${index}_grey.png`)">
+							<img v-if="$store.state.finance.score>=incentive.incentivescore" :src="incentive.thumbnailsmailimg" @click="go(incentive,bank.id)">
+							<img v-else :src="incentive.thumbnailsmailimg" :style="{'-webkit-filter':'saturate(0%) brightness(125%)'}">
 							<p class="name">{{incentive.incentivename}}</p>
 							<p class="score">乐惠分{{incentive.incentivescore}}</p>
 						</div>

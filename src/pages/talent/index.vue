@@ -27,13 +27,13 @@
 					<div class="card-head-title card-head-title-bd-blue">{{netDot.travelname}}</div>
 				</div>
 				<div class="card-body">
-					<img src="../../img/talent/ms_talent@2x.jpg">
+					<img :src="netDot.imagelink">
 				</div>
 				<div class="card-foot">
 					<div class="talent-wrap">
 						<div class="item" v-for="(incentive,index) in netDot.incentives" :key="index">
-							<img v-if="$store.state.talent.score>=incentive.incentivescore" src="../../img/talent/ydy@2x.png" @click="isComment(incentive,netDot.id)">
-							<img v-else src="../../img/talent/ydy@2x.png" :style="{'-webkit-filter':'saturate(0%) brightness(125%)'}">
+							<img v-if="$store.state.talent.score>=incentive.incentivescore" :src="incentive.thumbnailsmailimg" @click="isComment(incentive,netDot.id)">
+							<img v-else :src="incentive.thumbnailsmailimg" :style="{'-webkit-filter':'saturate(0%) brightness(125%)'}">
 							<p class="name">{{incentive.incentivename}}</p>
 							<p class="score">乐惠分{{incentive.incentivescore}}</p>
 						</div>
