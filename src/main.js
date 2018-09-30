@@ -8,12 +8,14 @@ import store from './store'
 import router from './router'
 import 'url-search-params-polyfill';
 import http from './js/http';
+import config from './js/config';
 import VueAMap from 'vue-amap';
 import { lazyAMapApiLoaderInstance } from "vue-amap";
 // import './style/common.scss';
 
 Vue.config.productionTip = false
 Vue.prototype.$http = http;
+Vue.prototype.$ctx = config.ctx;
 Vue.use(MintUI);
 Vue.use(VueAMap);
 VueAMap.initAMapApiLoader({

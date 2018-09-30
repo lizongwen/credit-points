@@ -97,7 +97,7 @@ export default {
         idcard: this.$route.query.idcard
       };
       const res = await this.$http.getUser(
-        "/credit/common/user/getUserInfoByIdcard",
+		  this.$ctx+"/common/user/getUserInfoByIdcard",
         params
       );
       if (res) {

@@ -32,10 +32,14 @@ router.beforeEach((to, from, next) => {
 		document.title = to.meta.title || '信用服务'
 	}
 	if (to.path == '/umbrella/home') {
-		if (!to.code) {
+		if (!to.query.code) {
 			next('/download')
+		}else{
+			next()
 		}
+	}else{
+		next()
 	}
-	next()
+	
 })
 export default router;

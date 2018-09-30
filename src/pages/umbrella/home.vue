@@ -46,7 +46,7 @@ export default {
         type: "xyqUser"
       };
       const res = await this.$http.getUser(
-        "/credit/common/venue/getWdbmByCode",
+        this.$ctx+"/common/venue/getWdbmByCode",
         params
       );
       if (res) {
@@ -60,8 +60,7 @@ export default {
         type: "xyqUser"
       };
       const res = await this.$http.getUser(
-        "/credit/common/user/getUserInfoByCode",
-        // "/qtweb/credit/common/user/getUserInfoByCode",
+        this.$ctx+"/common/user/getUserInfoByCode",
         params
       );
       this.$store.commit("umbrella/setUserId", res.userid);

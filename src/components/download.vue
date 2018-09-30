@@ -3,15 +3,15 @@
 		<div class="g-header">
 			<img src="../img/logo-qmsg.png" alt="场馆认证">
 		</div>
-		<div class="g-content">
-			<p class="tip">请使用城市令扫码功能开启您的乐惠服务</p>
-			<button class="btn btn-primary btn-block btn-large" @click="openApp">打开城市令</button>
+			<div class="g-content">
+				<p class="tip">请使用城市令扫码功能开启您的乐惠服务</p>
+				<button class="btn btn-primary btn-block btn-large" @click="openApp">打开城市令</button>
+			</div>
+			<div class="mask" v-show="showflag" @click="showflag=false">
+				<img src="../img/ios-tip.png" v-if="os.type==1" />
+				<img src="../img/android-tip.png" v-else />
 		</div>
-		<div class="mask" v-show="showflag" @click="showflag=false">
-			<img src="../img/ios-tip.png" v-if="os.type==1" />
-			<img src="../img/android-tip.png" v-else />
-		</div>
-	</div>
+			</div>
 </template>
 
 <script>
@@ -36,7 +36,12 @@ export default {
   },
   methods: {
     openApp() {
-      this.showflag = true;
+      var aLink = document.createElement("a");
+      var location = "citytoken://openvc?vcname=capture";
+      aLink.href =
+        "http://news.citytoken.cn/topic/zhuanti/downloadpage/index.html?" +
+        location;
+      aLink.click();
     }
   }
 };

@@ -60,8 +60,8 @@ export default {
 	},
 	post(url, data) {
 		let Public = { //公共参数
-			'token': "da6a0b36-f379-4c1e-af77-50f610dcbffc",//测试环境固定token
-			// 'token': "bb21ca58-be12-48a6-b3b1-21eca72f932c",//生产环境固定token
+			// 'token': "da6a0b36-f379-4c1e-af77-50f610dcbffc",//测试环境固定token
+			'token': "bb21ca58-be12-48a6-b3b1-21eca72f932c",//生产环境固定token
 			"version": "1.0",
 			"source": "1",
 		}

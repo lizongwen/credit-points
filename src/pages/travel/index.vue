@@ -87,7 +87,7 @@ export default {
         idcard: this.$store.state.travel.useridcard
       };
       const res = await this.$http.getUser(
-        "/credit/common/admin/checkIsAdmin",
+        this.$ctx+"/common/admin/checkIsAdmin",
         params
       );
       if (res.resultCode == "0000") {
@@ -100,7 +100,7 @@ export default {
         idcard: this.$store.state.travel.useridcard
       };
       const res = await this.$http.getUser(
-        "/credit/common/user/getUserInfoByIdcard",
+        this.$ctx+"/common/user/getUserInfoByIdcard",
         params
       );
       if (res) {
@@ -113,12 +113,11 @@ export default {
         name: "application_list"
       });
     },
-    goApplication(index) {
-      let data = this.cars[index].incentives[0];
+    go(data,id) {
       this.$store.commit("travel/setIncentiveId", data.id);
       this.$store.commit("travel/setIncentiveName", data.incentivename);
       this.$store.commit("travel/setUsercreditscore", data.incentivescore);
-      this.$store.commit("travel/setVenueId", this.cars[index].id);
+      this.$store.commit("travel/setVenueId", id);
       this.$router.push({
         name: "deposit_halved"
       });
